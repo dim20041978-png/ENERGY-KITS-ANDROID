@@ -30,6 +30,7 @@ public class MainActivity extends Activity {
  private static final String DEFAULT_FEED = "https://raw.githubusercontent.com/dim20041978-png/ENERGY-KITS-ANDROID/main/catalog/offers.json";
  private CompatibilityCatalog compatibility;
  private double requestedLoadKw = Double.NaN;
+ private double requestedCapacityAh = 0;
  public void onCreate(Bundle b){super.onCreate(b);compatibility=new CompatibilityCatalog(getAssets());try{kits=new JSONArray(getPreferences(Context.MODE_PRIVATE).getString("kits","[]"));}catch(Exception ignored){}
  LinearLayout screen=new LinearLayout(this);screen.setOrientation(LinearLayout.VERTICAL);screen.setPadding(dp(12),dp(8),dp(12),dp(8));screen.setBackground(new android.graphics.drawable.GradientDrawable(android.graphics.drawable.GradientDrawable.Orientation.TL_BR,new int[]{0xff030e2c,0xff064e9b,0xff031330}));
  setContentView(screen);
@@ -55,7 +56,7 @@ public class MainActivity extends Activity {
  }
  Button summaryButton(LinearLayout parent,String label,Runnable action){Button b=new Button(this);b.setText(label);b.setTextSize(12);b.setTextColor(Color.WHITE);b.setBackgroundTintList(null);b.setBackground(gloss(0xff008dff,0xff003779));LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(0,-2,1);lp.setMargins(dp(2),dp(2),dp(2),dp(2));parent.addView(b,lp);b.setOnClickListener(v->action.run());return b;}
  void resetPreview(String message){previewInverter=null;previewBattery=null;foundInverters=Collections.emptyList();foundBatteries=Collections.emptyList();kitSummary.setText(message);kitDetails.setEnabled(false);kitAlternatives.setEnabled(false);}
- void showPreview(JSONObject x,JSONObject y){previewInverter=x;previewBattery=y;double v=y.optDouble("voltage"),a=y.optDouble("ah");String energy=positiveFinite(v)&&positiveFinite(a)?String.format(Locale.US,"%.2f кВт·год | %s А·год",v*a/1000,y.optString("ah")):"немає даних";String warning=conflict(x,y);if(warning.isEmpty())warning="BMS: "+compatibilityEvidence(x,y);kitSummary.setText(getString(R.string.kit_summary,x.optString("model")+" ("+x.optString("kw")+" кВт"+(x.optInt("phases")>0?", "+x.optInt("phases")+" ф.":"")+")",priceLabel(x),y.optString("model"),priceLabel(y),y.optString("voltage"),energy,warning,totalPrice(x,y)));kitDetails.setEnabled(true);}
+ void showPreview(JSONObject x,JSONObject y){previewInverter=x;previewBattery=y;double v=y.optDouble("voltage"),a=y.optDouble("ah");String energy=positiveFinite(v)&&positiveFinite(a)?String.format(Locale.US,"%.2f кВт·год | %s А·год",v*a/1000,y.optString("ah")):"немає даних";String warning=conflict(x,y);if(warning.isEmpty())warning="BMS: "+compatibilityEvidence(x,y);kitSummary.setText(getString(R.string.kit_summary,x.optString("model")+" ("+x.optString("kw")+" кВт"+(x.optInt("phases")>0?", "+x.optInt("phases")+" ф.":"")+")",priceLabel(x),batteryName(y),priceLabel(y),y.optString("voltage"),energy,warning,totalPrice(x,y)));kitDetails.setEnabled(true);}
  
  private final android.os.Handler autoHandler=new android.os.Handler(android.os.Looper.getMainLooper());
  private String lastAutoQuery="";
@@ -71,12 +72,20 @@ public class MainActivity extends Activity {
  }
  }
  }
- void guidedSearch(){try{double kw=num(watts),v=optionalNum(iv),capacity=optionalNum(ah);String endpoint=getPreferences(Context.MODE_PRIVATE).getString("offer_feed",DEFAULT_FEED);final int generation=++searchGeneration;requestedLoadKw=kw;resetPreview("Пошук комплектів…");if(endpoint.isEmpty()){kitSummary.setText("Джерело цін не налаштоване.");kitAlternatives.setEnabled(true);return;}new Thread(()->{try{JSONArray offers=loadOffers(endpoint);java.util.List<JSONObject> i=OfferSource.matches(offers,"inverter",v,kw),a=OfferSource.matches(offers,"battery",v,Math.max(capacity,Double.MIN_VALUE));runOnUiThread(()->{if(!isFinishing()&&!isDestroyed()&&generation==searchGeneration)automaticPairs(i,a);});}catch(Exception ex){runOnUiThread(()->{if(!isFinishing()&&!isDestroyed()&&generation==searchGeneration){lastAutoQuery="";kitSummary.setText("Не вдалося отримати пропозиції. Повторіть пошук або перевірте джерело цін.");kitAlternatives.setEnabled(true);}});}}).start();}catch(Exception e){Toast.makeText(this,"Вкажіть додатну потужність. Ємність і напругу можна залишити порожніми; введені значення мають бути додатними.",Toast.LENGTH_LONG).show();}}
+ void guidedSearch(){try{double kw=num(watts),v=optionalNum(iv),capacity=optionalNum(ah);String endpoint=getPreferences(Context.MODE_PRIVATE).getString("offer_feed",DEFAULT_FEED);final int generation=++searchGeneration;requestedLoadKw=kw;requestedCapacityAh=capacity;resetPreview("Пошук комплектів…");if(endpoint.isEmpty()){kitSummary.setText("Джерело цін не налаштоване.");kitAlternatives.setEnabled(true);return;}new Thread(()->{try{JSONArray offers=loadOffers(endpoint);java.util.List<JSONObject> i=OfferSource.matches(offers,"inverter",v,kw),a=OfferSource.matches(offers,"battery",v,Double.MIN_VALUE);runOnUiThread(()->{if(!isFinishing()&&!isDestroyed()&&generation==searchGeneration)automaticPairs(i,a);});}catch(Exception ex){runOnUiThread(()->{if(!isFinishing()&&!isDestroyed()&&generation==searchGeneration){lastAutoQuery="";kitSummary.setText("Не вдалося отримати пропозиції. Повторіть пошук або перевірте джерело цін.");kitAlternatives.setEnabled(true);}});}}).start();}catch(Exception e){Toast.makeText(this,"Вкажіть додатну потужність. Ємність і напругу можна залишити порожніми; введені значення мають бути додатними.",Toast.LENGTH_LONG).show();}}
+ String batteryName(JSONObject o){int n=CompatibilityCatalog.modules(o);return (n>1?n+" × ":"")+o.optString("model");}
+ JSONObject bankOffer(JSONObject unit,int count){
+ try{if(count<1)return null;JSONObject bank=new JSONObject(unit.toString());
+ bank.remove("_kit_modules");bank.put("_kit_modules",count);
+ bank.put("ah",unit.optDouble("ah")*count);bank.put("price",unit.optDouble("price")*count);
+ if(unit.has("price_max")){double max=unit.optDouble("price_max");if(positiveFinite(max))bank.put("price_max",max*count);}
+ return bank;}catch(JSONException ex){return null;}}
  java.util.List<JSONObject[]> compatiblePairs(java.util.List<JSONObject> inverters,java.util.List<JSONObject> batteries){
  java.util.List<JSONObject[]> pairs=new ArrayList<>();
  for(JSONObject x:inverters)for(JSONObject y:batteries){
- if(!compatibility.canRecommend(x,y,loadFor(x)))continue;
- pairs.add(new JSONObject[]{x,y});}
+ int count=compatibility.minimumModules(x,y,loadFor(x),requestedCapacityAh);if(count<1)continue;
+ JSONObject bank=bankOffer(y,count);if(bank==null||!compatibility.canRecommend(x,bank,loadFor(x)))continue;
+ pairs.add(new JSONObject[]{x,bank});}
  Collections.sort(pairs,(p,q)->Double.compare(p[0].optDouble("price")+p[1].optDouble("price"),q[0].optDouble("price")+q[1].optDouble("price")));
  java.util.Set<String> seen=new HashSet<>();
  java.util.Iterator<JSONObject[]> iterator=pairs.iterator();while(iterator.hasNext()){JSONObject[] p=iterator.next();String key=p[0].optString("model")+"\n"+p[1].optString("model");if(!seen.add(key))iterator.remove();}
@@ -84,7 +93,7 @@ public class MainActivity extends Activity {
  void automaticPairs(java.util.List<JSONObject> inverters,java.util.List<JSONObject> batteries){foundInverters=inverters;foundBatteries=batteries;kitAlternatives.setEnabled(true);java.util.List<JSONObject[]> pairs=compatiblePairs(inverters,batteries);if(pairs.isEmpty()){kitSummary.setText(R.string.no_confirmed_kit);return;}JSONObject[] best=pairs.get(0);showPreview(best[0],best[1]);}
  void showPairChoices(java.util.List<JSONObject> inverters,java.util.List<JSONObject> batteries){
  Dialog d=new Dialog(this,android.R.style.Theme_Material_NoActionBar);LinearLayout body=page(d,"Готові енергокомплекти");java.util.List<JSONObject[]> pairs=compatiblePairs(inverters,batteries);
- pageText(body,"Підтверджені унікальні комплекти: "+pairs.size()+". Сортування за ціною. Підбір для заданої потужності з однією АКБ; перевірте фазність, умови BMS і межу струму заряду.",16);
+ pageText(body,"Підтверджені унікальні комплекти: "+pairs.size()+". Сортування за ціною. Підбір однієї або кількох однакових АКБ. Ціна обладнання без монтажу, захисту та шин. Перевірте фазність і паспортні умови.",16);
  if(pairs.isEmpty())pageText(body,"Автоматично підтверджених комплектів немає. Доступний ручний підбір.",18);
  int n=0;for(JSONObject[] p:pairs){if(n>=100)break;JSONObject x=p[0],y=p[1];pageText(body,"Комплект №"+(++n),22);offerPhoto(body,x);pageText(body,offerLabel(x),18);offerPhoto(body,y);pageText(body,offerLabel(y),18);pageText(body,"Разом: "+totalPrice(x,y),22);pageText(body,pairCheck(x,y),16);pageButton(body,"Вибрати комплект",()->{d.dismiss();pairResult(x,y);});}
  pageButton(body,"Ручний підбір",()->{d.dismiss();choosePair(inverters,batteries);});pageButton(body,"Оновити ціни",()->{d.dismiss();guidedSearch();});pageButton(body,"Назад",d::dismiss);d.show();
@@ -111,7 +120,7 @@ public class MainActivity extends Activity {
  boolean bothManual="manual".equals(inverter.optString("price_source"))&&"manual".equals(battery.optString("price_source"));
  return bothDirect||bothManual?total:total+" (орієнтовно)";
  }
- String offerLabel(JSONObject o){return o.optString("model")+" — "+priceLabel(o)+"\n"+o.optString("voltage")+" В | "+("inverter".equals(o.optString("kind"))?o.optString("kw")+" кВт"+(o.optInt("phases")>0?" | "+o.optInt("phases")+" ф.":""):o.optString("ah")+" А·год")+"\n"+o.optString("seller")+" | "+o.optString("updated_at");}
+ String offerLabel(JSONObject o){return batteryName(o)+" — "+priceLabel(o)+"\n"+o.optString("voltage")+" В | "+("inverter".equals(o.optString("kind"))?o.optString("kw")+" кВт"+(o.optInt("phases")>0?" | "+o.optInt("phases")+" ф.":""):o.optString("ah")+" А·год")+"\n"+o.optString("seller")+" | "+o.optString("updated_at");}
  void chooseOffer(String title,java.util.List<JSONObject> list,OfferChoice choice){Dialog d=new Dialog(this,android.R.style.Theme_Material_NoActionBar);LinearLayout body=page(d,title);for(JSONObject o:list){offerPhoto(body,o);pageText(body,offerLabel(o),18);pageButton(body,"Вибрати",()->{d.dismiss();choice.select(o);});pageButton(body,"Сторінка продавця",()->openOffer(o));}pageButton(body,"Назад",d::dismiss);d.show();}
  final java.util.concurrent.ExecutorService photoPool=java.util.concurrent.Executors.newFixedThreadPool(2);
  void offerPhoto(LinearLayout body,JSONObject o){
@@ -148,7 +157,7 @@ public class MainActivity extends Activity {
  }
  double continuousCurrent(JSONObject battery){
  JSONObject spec=compatibility.specification(battery);
- return spec==null?Double.NaN:spec.optDouble("max_discharge_a");
+ return spec==null?Double.NaN:spec.optDouble("max_discharge_a")*CompatibilityCatalog.modules(battery);
  }
  String compatibilityEvidence(JSONObject inverter,JSONObject battery){
  JSONObject rule=compatibility.bmsRule(inverter,battery);
@@ -176,7 +185,10 @@ public class MainActivity extends Activity {
  result.append(String.format(Locale.US,"\nДля %.2f кВт потрібно близько %.1f А із запасом. Межа розряду АКБ: %.1f А.",
        load,required,continuousCurrent(battery)));
  }else result.append("\nНедостатньо паспортних даних для перевірки струму розряду.");
+ int modules=CompatibilityCatalog.modules(battery);
+ if(modules>1)result.append("\nБанк: ").append(modules).append(" однакових АКБ паралельно. Ціна без кабелів, захисту, шин та монтажу. Перевірити проєкт, рівномірність струмів, BMS і температурні обмеження.");
  double limit=CompatibilityCatalog.chargeLimit(i,b);
+ if(modules>1&&i!=null&&b!=null&&positiveFinite(limit))limit=Math.min(i.optDouble("max_charge_a"),b.optDouble("max_charge_a")*modules);
  if(positiveFinite(limit)){
  result.append("\nВерхня межа струму заряду: ").append(limit)
        .append(" А. Враховуйте нижчі ліміти BMS та паспортні умови.");
@@ -187,7 +199,7 @@ public class MainActivity extends Activity {
  if(!problem.isEmpty())result.append("\n").append(problem);
  return result.toString();
  }
- boolean savePair(JSONObject x,JSONObject y){if(!conflict(x,y).isEmpty()){Toast.makeText(this,conflict(x,y),Toast.LENGTH_LONG).show();return false;}try{double i=x.optDouble("price"),b=y.optDouble("price");if(!(i>0&&b>0)||Double.isInfinite(i+b))throw new IllegalArgumentException();JSONObject k=new JSONObject();k.put("name",x.optString("model")+" + "+y.optString("model"));k.put("price",i+b);double v=y.optDouble("voltage",0),a=y.optDouble("ah",0);k.put("energy",v*a/1000);k.put("note",pairCheck(x,y));k.put("inverter_source",x.optString("seller")+" | "+x.optString("updated_at")+" | "+x.optString("url"));k.put("battery_source",y.optString("seller")+" | "+y.optString("updated_at")+" | "+y.optString("url"));k.put("inverter_offer",x);k.put("battery_offer",y);kits.put(k);save();render();return true;}catch(Exception ex){Toast.makeText(this,"Не вдалося зберегти комплект",Toast.LENGTH_LONG).show();return false;}}
+ boolean savePair(JSONObject x,JSONObject y){if(!conflict(x,y).isEmpty()){Toast.makeText(this,conflict(x,y),Toast.LENGTH_LONG).show();return false;}try{double i=x.optDouble("price"),b=y.optDouble("price");if(!(i>0&&b>0)||Double.isInfinite(i+b))throw new IllegalArgumentException();JSONObject k=new JSONObject();k.put("name",x.optString("model")+" + "+batteryName(y));k.put("price",i+b);double v=y.optDouble("voltage",0),a=y.optDouble("ah",0);k.put("energy",v*a/1000);k.put("note",pairCheck(x,y));k.put("inverter_source",x.optString("seller")+" | "+x.optString("updated_at")+" | "+x.optString("url"));k.put("battery_source",y.optString("seller")+" | "+y.optString("updated_at")+" | "+y.optString("url"));k.put("inverter_offer",x);k.put("battery_offer",y);kits.put(k);save();render();return true;}catch(Exception ex){Toast.makeText(this,"Не вдалося зберегти комплект",Toast.LENGTH_LONG).show();return false;}}
  JSONObject exactOffer(java.util.List<JSONObject> list,JSONObject old){
  JSONObject alternative=null;
  for(JSONObject o:list){
@@ -198,7 +210,7 @@ public class MainActivity extends Activity {
  }
  return alternative;
  }
- void refreshPair(Dialog d,JSONObject x,JSONObject y){String endpoint=getPreferences(Context.MODE_PRIVATE).getString("offer_feed",DEFAULT_FEED);if(endpoint.isEmpty()){Toast.makeText(this,"Налаштуйте джерело цін",Toast.LENGTH_LONG).show();return;}Toast.makeText(this,"Перевірка цін…",Toast.LENGTH_SHORT).show();new Thread(()->{try{JSONArray offers=OfferSource.load(endpoint);JSONObject nx=exactOffer(OfferSource.matches(offers,"inverter",x.optDouble("voltage"),x.optDouble("kw")),x),ny=exactOffer(OfferSource.matches(offers,"battery",y.optDouble("voltage"),y.optDouble("ah")),y);runOnUiThread(()->{if(isFinishing()||!d.isShowing())return;if(nx==null||ny==null){Toast.makeText(this,"Не знайдено обидві вихідні пропозиції. Попередні ціни збережено.",Toast.LENGTH_LONG).show();return;}d.dismiss();pairResult(nx,ny);});}catch(Exception e){runOnUiThread(()->{if(!isFinishing()&&d.isShowing())Toast.makeText(this,"Не вдалося оновити ціни. Попередні дані збережено.",Toast.LENGTH_LONG).show();});}}).start();}
+ void refreshPair(Dialog d,JSONObject x,JSONObject y){String endpoint=getPreferences(Context.MODE_PRIVATE).getString("offer_feed",DEFAULT_FEED);if(endpoint.isEmpty()){Toast.makeText(this,"Налаштуйте джерело цін",Toast.LENGTH_LONG).show();return;}Toast.makeText(this,"Перевірка цін…",Toast.LENGTH_SHORT).show();new Thread(()->{try{JSONArray offers=OfferSource.load(endpoint);JSONObject nx=exactOffer(OfferSource.matches(offers,"inverter",x.optDouble("voltage"),x.optDouble("kw")),x),ny=exactOffer(OfferSource.matches(offers,"battery",y.optDouble("voltage"),y.optDouble("ah")/CompatibilityCatalog.modules(y)),y);final JSONObject refreshed=ny==null?null:bankOffer(ny,CompatibilityCatalog.modules(y));runOnUiThread(()->{if(isFinishing()||!d.isShowing())return;if(nx==null||refreshed==null||!compatibility.canRecommend(nx,refreshed,loadFor(nx))){Toast.makeText(this,"Не знайдено обидві вихідні пропозиції. Попередні ціни збережено.",Toast.LENGTH_LONG).show();return;}d.dismiss();pairResult(nx,refreshed);});}catch(Exception e){runOnUiThread(()->{if(!isFinishing()&&d.isShowing())Toast.makeText(this,"Не вдалося оновити ціни. Попередні дані збережено.",Toast.LENGTH_LONG).show();});}}).start();}
  void printPair(JSONObject x,JSONObject y){
  android.print.PrintManager manager=(android.print.PrintManager)getSystemService(Context.PRINT_SERVICE);
  if(manager==null){Toast.makeText(this,"Служба друку недоступна",Toast.LENGTH_LONG).show();return;}
@@ -223,7 +235,7 @@ public class MainActivity extends Activity {
  pageText(body,"Введіть перевірені вами ціни у гривнях. Вони будуть позначені як ручні, а не автоматично отримані.",16);
  LinearLayout old=fieldHost;fieldHost=body;
  pageText(body,x.optString("model"),18);EditText first=field("Ціна інвертора, грн",android.text.InputType.TYPE_CLASS_NUMBER|android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
- pageText(body,y.optString("model"),18);EditText second=field("Ціна АКБ, грн",android.text.InputType.TYPE_CLASS_NUMBER|android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
+ pageText(body,batteryName(y),18);EditText second=field("Загальна ціна всіх АКБ, грн",android.text.InputType.TYPE_CLASS_NUMBER|android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
  fieldHost=old;
  pageButton(body,"Застосувати",()->{try{
  double a=num(first),b=num(second);if(Double.isInfinite(a+b))throw new IllegalArgumentException();
@@ -238,7 +250,7 @@ public class MainActivity extends Activity {
  void compareKits(JSONObject x,JSONObject y){
  Dialog d=new Dialog(this,android.R.style.Theme_Material_NoActionBar);LinearLayout body=page(d,"Порівняння комплектів");
  ArrayList<JSONObject> list=new ArrayList<>();for(int i=0;i<kits.length();i++){JSONObject k=kits.optJSONObject(i);if(k!=null)list.add(k);}
- if(x!=null&&y!=null){try{JSONObject k=new JSONObject();k.put("name",x.optString("model")+" + "+y.optString("model")+" (поточний)");k.put("price",x.optDouble("price")+y.optDouble("price"));k.put("energy",y.optDouble("voltage")*y.optDouble("ah")/1000);k.put("note",pairCheck(x,y));k.put("inverter_source",x.optString("seller")+" | "+x.optString("updated_at"));k.put("battery_source",y.optString("seller")+" | "+y.optString("updated_at"));list.add(k);}catch(JSONException ignored){}}
+ if(x!=null&&y!=null){try{JSONObject k=new JSONObject();k.put("name",x.optString("model")+" + "+batteryName(y)+" (поточний)");k.put("price",x.optDouble("price")+y.optDouble("price"));k.put("energy",y.optDouble("voltage")*y.optDouble("ah")/1000);k.put("note",pairCheck(x,y));k.put("inverter_source",x.optString("seller")+" | "+x.optString("updated_at"));k.put("battery_source",y.optString("seller")+" | "+y.optString("updated_at"));list.add(k);}catch(JSONException ignored){}}
  Collections.sort(list,(a,b)->Double.compare(a.optDouble("price"),b.optDouble("price")));
  if(list.isEmpty())pageText(body,"Збережених комплектів немає",18);
  else{double cheapest=list.get(0).optDouble("price");pageText(body,"За зростанням збереженої ціни. Ціни не оновлюються автоматично.",16);int n=0;for(JSONObject k:list){pageText(body,"№"+(++n)+" "+k.optString("name"),20);pageText(body,String.format(java.util.Locale.US,"%.2f грн | +%.2f грн до мінімуму | %.2f кВт·год",k.optDouble("price"),k.optDouble("price")-cheapest,k.optDouble("energy")),18);pageText(body,k.optString("note")+"\nІнвертор: "+k.optString("inverter_source")+"\nАКБ: "+k.optString("battery_source"),16);}}
