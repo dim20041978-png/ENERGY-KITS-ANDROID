@@ -342,7 +342,12 @@
     "seller": "Струмлайн",
     "url": "https://strumline.org/catalog/akumulyatory",
     "currency": "UAH",
-    "updated_at": "2026-11-25"
+    "updated_at": "2026-11-25",
+    "max_discharge_a": 100,
+    "recommended_current_a": 100,
+    "peak_current_a": 200,
+    "peak_duration_s": 15,
+    "discharge_current_status": "manufacturer_documented"
   },
   {
     "kind": "battery",
@@ -816,7 +821,23 @@
     "currency": "UAH",
     "updated_at": "2026-11-25",
     "spec_status": "retailer_only",
-    "availability": "unknown"
+    "availability": "unknown",
+    "voltage_min": 44.8,
+    "voltage_max": 57.6,
+    "energy_kwh": 5.12,
+    "recommended_current_a": 50,
+    "max_charge_a": 75,
+    "max_discharge_a": 100,
+    "peak_current_a": 110,
+    "peak_duration_s": 15,
+    "communication": [
+      "CAN",
+      "RS485",
+      "RS232"
+    ],
+    "spec_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20250901/DL5.0CDatasheetEN20250701.pdf",
+    "spec_verified_at": "2026-11-25",
+    "discharge_current_status": "manufacturer_documented"
   },
   {
     "kind": "battery",
@@ -1168,7 +1189,23 @@
     "updated_at": "2026-11-25",
     "spec_status": "retailer_only",
     "availability": "unknown",
-    "condition": "trade_in"
+    "condition": "trade_in",
+    "voltage_min": 44.8,
+    "voltage_max": 57.6,
+    "energy_kwh": 5.12,
+    "recommended_current_a": 50,
+    "max_charge_a": 75,
+    "max_discharge_a": 75,
+    "peak_current_a": 100,
+    "peak_duration_s": 15,
+    "communication": [
+      "CAN",
+      "RS485",
+      "RS232"
+    ],
+    "spec_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20241227/DynessBX51100datasheetEN.pdf",
+    "spec_verified_at": "2026-11-25",
+    "discharge_current_status": "manufacturer_documented"
   },
   {
     "kind": "battery",
