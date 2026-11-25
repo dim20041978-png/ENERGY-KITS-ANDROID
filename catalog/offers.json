@@ -321,5 +321,80 @@
     "weight_kg": 45,
     "product_page": "https://deye.com/product/se-g5-1-pro-b/",
     "spec_verified_at": "2026-11-25"
+  },
+  {
+    "kind": "battery",
+    "model": "Pylontech US5000",
+    "price": 58890,
+    "voltage": 48,
+    "ah": 100,
+    "energy_kwh": 4.8,
+    "usable_energy_kwh": 4.56,
+    "bms": 100,
+    "communication": [
+      "CAN",
+      "RS485"
+    ],
+    "ip": "IP20",
+    "weight_kg": 39.7,
+    "spec_source": "https://en.pylontech.com.cn/products/c23/134.html",
+    "spec_verified_at": "2026-11-25",
+    "seller": "Струмлайн",
+    "url": "https://strumline.org/catalog/akumulyatory",
+    "currency": "UAH",
+    "updated_at": "2026-11-25"
+  },
+  {
+    "kind": "battery",
+    "model": "Dyness B4850",
+    "price": 28313,
+    "voltage": 48,
+    "ah": 50,
+    "energy_kwh": 2.4,
+    "seller": "Струмлайн",
+    "url": "https://strumline.org/catalog/akumulyatory",
+    "currency": "UAH",
+    "updated_at": "2026-11-25"
+  },
+  {
+    "kind": "battery",
+    "model": "Pylontech US3000C",
+    "price": 52095,
+    "voltage": 48,
+    "ah": 74,
+    "energy_kwh": 3.552,
+    "seller": "Струмлайн",
+    "url": "https://strumline.org/catalog/akumulyatory",
+    "availability": "on_order",
+    "currency": "UAH",
+    "updated_at": "2026-11-25"
+  },
+  {
+    "kind": "battery",
+    "model": "Dyness DL5.0C Heat",
+    "price": 39086,
+    "voltage": 51.2,
+    "ah": 100,
+    "energy_kwh": 5.12,
+    "seller": "Струмлайн",
+    "url": "https://strumline.org/catalog/akumulyatory",
+    "spec_status": "variant_not_verified",
+    "currency": "UAH",
+    "updated_at": "2026-11-25"
+  },
+  {
+    "kind": "inverter",
+    "model": "MUST PV18-5248 PRO",
+    "price": 22099,
+    "price_max": 30999,
+    "price_type": "marketplace_minimum",
+    "voltage": 48,
+    "kw": 5.2,
+    "phases": 1,
+    "seller": "Hotline (від)",
+    "url": "https://hotline.ua/ua/dacha_sad-invertory-dlya-solnechnyh-batarej/must-pv18-5248-pro/",
+    "spec_status": "retailer_only",
+    "currency": "UAH",
+    "updated_at": "2026-11-25"
   }
 ]
