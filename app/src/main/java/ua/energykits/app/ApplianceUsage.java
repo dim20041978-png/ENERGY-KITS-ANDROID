@@ -30,6 +30,23 @@ final class ApplianceUsage {
         return nominalWh * USABLE / (watts / EFFICIENCY + IDLE_W);
     }
 
+    static double usableWh(double nominalWh) {
+        return CompatibilityMath.positiveFinite(nominalWh) ? nominalWh * USABLE : Double.NaN;
+    }
+
+    /** Positive means remaining energy; negative means a deficit, assuming 24 h inverter operation. */
+    static double dailyBalanceWh(double nominalWh, double acWh) {
+        if (!CompatibilityMath.positiveFinite(nominalWh) || Double.isNaN(acWh)
+                || Double.isInfinite(acWh) || acWh < 0) return Double.NaN;
+        return usableWh(nominalWh) - dailyBatteryWh(acWh);
+    }
+
+    static String runtimeText(double hours) {
+        if (!CompatibilityMath.positiveFinite(hours)) return "—";
+        long minutes = Math.round(hours * 60);
+        return minutes == 0 ? "менше 1 хв" : (minutes / 60) + " год " + (minutes % 60) + " хв";
+    }
+
     static double dailyBatteryWh(double acWh) {
         return acWh / EFFICIENCY + IDLE_W * 24;
     }
