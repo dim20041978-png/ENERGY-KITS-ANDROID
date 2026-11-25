@@ -1,0 +1,53 @@
+name: Android 1.0.0 device verification
+on:
+  push:
+    branches: [verify/energy-kits-android-1.0.0]
+permissions:
+  contents: read
+jobs:
+  device:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Prepare Android SDK and emulator
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo chmod a+rw /dev/kvm
+          SDKTOOLS="$ANDROID_HOME/cmdline-tools/latest/bin"
+          set +o pipefail
+          yes | "$SDKTOOLS/sdkmanager" --licenses >/dev/null
+          set -o pipefail
+          "$SDKTOOLS/sdkmanager" "platforms;android-35" "build-tools;35.0.0" "system-images;android-35;google_apis;x86_64"
+          printf 'no\n' | "$SDKTOOLS/avdmanager" create avd --name EnergyKitsVerification --package "system-images;android-35;google_apis;x86_64" --device pixel_2
+          "$ANDROID_HOME/emulator/emulator" -avd EnergyKitsVerification -no-window -no-audio -no-snapshot -no-boot-anim -no-metrics -gpu swiftshader_indirect > "$RUNNER_TEMP/energy-emulator.log" 2>&1 &
+          gradle :app:assembleDebug --console=plain
+          timeout 180 adb wait-for-device
+          for attempt in $(seq 1 90); do
+            if [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1 ]; then exit 0; fi
+            sleep 2
+          done
+          cat "$RUNNER_TEMP/energy-emulator.log"
+          exit 1
+      - name: Exercise selection, comparison, saving and PDF
+        run: python3 .github/verification/energy-kit-device.py
+      - name: Collect runtime evidence
+        if: always()
+        run: |
+          mkdir -p device-evidence
+          cp "$RUNNER_TEMP/energy-emulator.log" device-evidence/ || true
+          adb logcat -d -t 600 > device-evidence/logcat.txt || true
+          adb exec-out screencap -p > device-evidence/screen.png || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: device-evidence
+          path: device-evidence/
