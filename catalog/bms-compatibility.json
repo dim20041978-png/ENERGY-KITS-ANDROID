@@ -404,15 +404,17 @@
   },
   {
     "inverters": [
-      "Solis S6-EH3P20K-H"
+      "Solis S6-EH3P20K-H",
+      "Solis S6-EH3P15K-H"
     ],
     "batteries": [
-      "Dyness STACK100-12"
+      "Dyness STACK100-12",
+      "Dyness STACK100-10"
     ],
     "source": "https://za.dyness.com/Public/Uploads/uploadfile/files/20251216/DynessSTACK100SeriesCompatibilityList20251212.pdf",
     "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20241023/DynessSTACK100UserManualEN0826.pdf",
     "protocol": "CAN",
-    "conditions": "Сумісний повний HV стек 12S із SBDU100; не масштабувати як паралельні LV АКБ. Потрібна професійна перевірка конфігурації, прошивок, фазного навантаження та захисту.",
+    "conditions": "Сумісний повний HV стек 10S або 12S із SBDU100; не масштабувати як паралельні LV АКБ. Потрібна професійна перевірка конфігурації, прошивок, фазного навантаження та захисту.",
     "min_modules": 1,
     "automatic": true,
     "system": "HV"
