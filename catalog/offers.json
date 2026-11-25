@@ -619,7 +619,7 @@
     ],
     "ip": "IP20",
     "weight_kg": 39.7,
-    "spec_source": "https://pylonwebs3.s3.amazonaws.com/upload/2024/09/26/US%20Series_20240926105858A040.pdf",
+    "spec_source": "https://manuals.plus/m/015bfc9290427912a8d9e7d61f75fe205a5d0c33d48c9720924ef16abe4a0ac0",
     "spec_verified_at": "2026-11-25",
     "seller": "Струмлайн",
     "url": "https://strumline.org/product/akumuliatorna-batareia-pylontech-us5000-4-8-kvt-hod-48v",
@@ -632,10 +632,12 @@
     "discharge_current_status": "manufacturer_documented",
     "price_status": "direct_verified",
     "availability": "in_stock",
-    "spec_note": "Вказано струм у нормальному режимі з паспорта. Пікові значення залежать від тривалості.",
+    "spec_note": "Для розрахунку використано консервативний струм тривалого режиму з інструкції.",
     "max_charge_a": 100,
-    "spec_status": "manufacturer_partial",
-    "photo_page": "https://en.pylontech.com.cn/products/c23/134.html"
+    "spec_status": "manufacturer_verified",
+    "photo_page": "https://en.pylontech.com.cn/products/c23/134.html",
+    "voltage_min": 43.5,
+    "voltage_max": 53.5
   },
   {
     "kind": "battery",
@@ -650,7 +652,7 @@
     "updated_at": "2026-11-25",
     "price_status": "direct_verified",
     "availability": "in_stock",
-    "spec_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20241022/DynessB4850datasheetEN.pdf",
+    "spec_source": "https://es.dyness.com/Public/Uploads/uploadfile/files/20241023/B4850UserManualEN.pdf",
     "recommended_current_a": 25,
     "communication": [
       "CAN",
@@ -658,11 +660,12 @@
     ],
     "voltage_min": 42,
     "voltage_max": 54.75,
-    "max_charge_a": 50,
-    "max_discharge_a": 50,
+    "max_charge_a": 25,
+    "max_discharge_a": 25,
     "spec_status": "manufacturer_verified",
     "spec_verified_at": "2026-11-25",
-    "photo_page": "https://strumline.org/product/akumuliatorna-batareia-dyness-b4850-2-4-kvt-hod-48-v"
+    "photo_page": "https://strumline.org/product/akumuliatorna-batareia-dyness-b4850-2-4-kvt-hod-48-v",
+    "spec_note": "Для розрахунку використано консервативний струм тривалого режиму з інструкції."
   },
   {
     "kind": "battery",
@@ -677,9 +680,9 @@
     "currency": "UAH",
     "updated_at": "2026-11-25",
     "price_status": "direct_verified",
-    "spec_status": "manufacturer_partial",
+    "spec_status": "manufacturer_verified",
     "photo_page": "https://strumline.org/product/akumuliatorna-batareia-pylontech-us3000c-3-5-kvt-hod-48v",
-    "spec_source": "https://pylonwebs3.s3.amazonaws.com/upload/2024/09/26/US%20Series_20240926105858A040.pdf",
+    "spec_source": "https://manuals.plus/m/bec9aefb0ff38e9de363419a7d33461258e6d8e6ec72fd35df06f396c050b7a4",
     "usable_energy_kwh": 3.37,
     "max_charge_a": 37,
     "max_discharge_a": 37,
@@ -689,8 +692,10 @@
       "RS485"
     ],
     "ip": "IP20",
-    "spec_note": "Вказано струм у нормальному режимі з паспорта. Пікові значення залежать від тривалості.",
-    "spec_verified_at": "2026-11-25"
+    "spec_note": "Для розрахунку використано консервативний струм тривалого режиму з інструкції.",
+    "spec_verified_at": "2026-11-25",
+    "voltage_min": 44.5,
+    "voltage_max": 53.5
   },
   {
     "kind": "battery",
@@ -2348,10 +2353,10 @@
     "url": "https://solar-catalog.com.ua/catalog/batteries/akumuliatorna-batareia-pylontech-us2000c-48-v-2-4-kvt-god",
     "currency": "UAH",
     "updated_at": "2026-11-25",
-    "spec_status": "manufacturer_partial",
+    "spec_status": "manufacturer_verified",
     "price_status": "direct_verified",
     "photo_page": "https://solar-catalog.com.ua/catalog/batteries/akumuliatorna-batareia-pylontech-us2000c-48-v-2-4-kvt-god",
-    "spec_source": "https://pylonwebs3.s3.amazonaws.com/upload/2024/09/26/US%20Series_20240926105858A040.pdf",
+    "spec_source": "https://manuals.plus/m/029ed3ff90d1d5889db16c1e9a291e78d16af2c9b1f03f84ceacb79ef4bb048d",
     "energy_kwh": 2.4,
     "usable_energy_kwh": 2.28,
     "max_charge_a": 25,
@@ -2362,8 +2367,10 @@
       "RS485"
     ],
     "ip": "IP20",
-    "spec_note": "Вказано струм у нормальному режимі з паспорта. Пікові значення залежать від тривалості.",
-    "spec_verified_at": "2026-11-25"
+    "spec_note": "Для розрахунку використано консервативний струм тривалого режиму з інструкції.",
+    "spec_verified_at": "2026-11-25",
+    "voltage_min": 44.5,
+    "voltage_max": 53.5
   },
   {
     "kind": "battery",
@@ -2521,5 +2528,50 @@
     "seller": "Дея Україна",
     "url": "https://www.deye-ukraine.com.ua/product-page/sun-20k-sg05lp3-eu",
     "availability": "unknown"
+  },
+  {
+    "currency": "UAH",
+    "updated_at": "2026-11-25",
+    "spec_verified_at": "2026-11-25",
+    "spec_status": "manufacturer_verified",
+    "price_status": "product_aggregate",
+    "seller": "E-Katalog",
+    "availability": "unknown",
+    "requires_hv_system": true,
+    "kind": "inverter",
+    "model": "Solis S6-EH3P20K-H",
+    "kw": 20,
+    "voltage": 600,
+    "dc_min": 120,
+    "dc_max": 800,
+    "max_discharge_a": 50,
+    "max_charge_a": 50,
+    "phases": 3,
+    "price": 82999,
+    "url": "https://ek.ua/ua/SOLIS-S6-EH3P20K-H.htm",
+    "spec_source": "https://7sun.eu/wp-content/uploads/2026/05/Solis-S6-EH3P12-20K-H-EU-Manual.pdf",
+    "spec_note": "HV, 50 A; не більше 40% номінальної потужності на фазу."
+  },
+  {
+    "currency": "UAH",
+    "updated_at": "2026-11-25",
+    "spec_verified_at": "2026-11-25",
+    "spec_status": "manufacturer_verified",
+    "price_status": "product_aggregate",
+    "seller": "E-Katalog",
+    "availability": "unknown",
+    "requires_hv_system": true,
+    "kind": "battery",
+    "model": "Dyness STACK100-12",
+    "voltage": 614.4,
+    "ah": 100,
+    "voltage_min": 537,
+    "voltage_max": 700,
+    "max_discharge_a": 50,
+    "max_charge_a": 50,
+    "price": 471781,
+    "url": "https://ek.ua/ua/DYNESS-STACK100-12.htm",
+    "spec_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20241023/DynessSTACK100UserManualEN0826.pdf",
+    "spec_note": "Готовий HV стек із 12 послідовних модулів S51100 та SBDU100; 50 А рекомендований струм. Не трактувати як 12 паралельних АКБ."
   }
 ]
