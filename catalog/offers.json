@@ -8,7 +8,19 @@
     "voltage": 48,
     "currency": "UAH",
     "updated_at": "2026-11-25",
-    "kw": 5
+    "kw": 5,
+    "dc_min": 40,
+    "dc_max": 60,
+    "max_charge_a": 120,
+    "max_discharge_a": 120,
+    "phases": 1,
+    "ip": "IP65",
+    "communication": [
+      "CAN",
+      "RS485"
+    ],
+    "spec_source": "https://cdn02.plentyone.com/gqw2uxdr3nhq/frontend/Downloads/Wechselrichter/Deye_SUN-5K-SG03LP1-EU_Datenblatt.pdf",
+    "spec_verified_at": "2026-11-25"
   },
   {
     "kind": "inverter",
@@ -32,7 +44,18 @@
     "updated_at": "2026-11-25",
     "ah": 100,
     "voltage_min": 43.2,
-    "voltage_max": 57.6
+    "voltage_max": 57.6,
+    "energy_kwh": 5.12,
+    "chemistry": "LiFePO4",
+    "recommended_current_a": 50,
+    "max_discharge_a": 100,
+    "peak_current_a": 150,
+    "peak_duration_s": 120,
+    "ip": "IP20",
+    "weight_kg": 45,
+    "spec_source": "https://deye.com/wp-content/uploads/2026/01/deye-se-g5.1-pro-b-series_brochure-20260115auv1.0.pdf",
+    "product_page": "https://deye.com/product/se-g5-1-pro-b/",
+    "spec_verified_at": "2026-11-25"
   },
   {
     "kind": "battery",
@@ -45,7 +68,18 @@
     "updated_at": "2026-11-25",
     "ah": 100,
     "voltage_min": 43.2,
-    "voltage_max": 57.6
+    "voltage_max": 57.6,
+    "energy_kwh": 5.12,
+    "chemistry": "LiFePO4",
+    "recommended_current_a": 50,
+    "max_discharge_a": 100,
+    "peak_current_a": 150,
+    "peak_duration_s": 120,
+    "ip": "IP20",
+    "weight_kg": 45,
+    "spec_source": "https://deye.com/wp-content/uploads/2026/01/deye-se-g5.1-pro-b-series_brochure-20260115auv1.0.pdf",
+    "product_page": "https://deye.com/product/se-g5-1-pro-b/",
+    "spec_verified_at": "2026-11-25"
   },
   {
     "kind": "battery",
@@ -264,6 +298,18 @@
     "url": "https://litivolt.com.ua/katalog-tovarov/oborudovanie/",
     "currency": "UAH",
     "updated_at": "2026-11-25",
-    "spec_source": "https://litivolt.com.ua/katalog-tovarov/oborudovanie/"
+    "spec_source": "https://deye.com/wp-content/uploads/2026/01/deye-se-g5.1-pro-b-series_brochure-20260115auv1.0.pdf",
+    "voltage_min": 43.2,
+    "voltage_max": 57.6,
+    "energy_kwh": 5.12,
+    "chemistry": "LiFePO4",
+    "recommended_current_a": 50,
+    "max_discharge_a": 100,
+    "peak_current_a": 150,
+    "peak_duration_s": 120,
+    "ip": "IP20",
+    "weight_kg": 45,
+    "product_page": "https://deye.com/product/se-g5-1-pro-b/",
+    "spec_verified_at": "2026-11-25"
   }
 ]
