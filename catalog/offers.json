@@ -136,7 +136,17 @@
     "currency": "UAH",
     "updated_at": "2026-11-25",
     "phases": 1,
-    "spec_source": "https://hgc-energy.com.ua/katalog/"
+    "spec_source": "https://growatt.tech/wp-content/uploads/2023/02/SPF-3000_5000-ES-Datasheet.pdf",
+    "peak_efficiency_pct": 93,
+    "surge_va": 10000,
+    "max_solar_charge_a": 100,
+    "max_ac_charge_a": 80,
+    "pv_mppt_min": 120,
+    "pv_mppt_max": 430,
+    "pv_max_v": 450,
+    "ip": "IP20",
+    "weight_kg": 12,
+    "spec_verified_at": "2026-11-25"
   },
   {
     "kind": "inverter",
