@@ -148,5 +148,20 @@
     "conditions": "Виробник вимагає GX, сумісну прошивку та мінімальну кількість модулів для пускового струму.",
     "min_modules": 0,
     "automatic": false
+  },
+  {
+    "inverters": [
+      "Solis S6-EH1P6K-L-PLUS",
+      "Solis S6-EH1P8K-L-PLUS"
+    ],
+    "batteries": [
+      "Dyness PowerBrick Plus"
+    ],
+    "source": "https://samonolithportalprodcdn.blob.core.windows.net/assets/general_product_documents/599d926ab38644b9db9f1b06a16d9fbceb6e9aa0_Dyness_Low_voltage_Batteries_Campatibility_List_20260715.pdf",
+    "protocol": "CAN",
+    "conditions": "Dyness 15.07.2026: серія Solis S6-EH1P3K-8K-L-PRO/PLUS підтримує PowerBrick Plus. Інструкція V4.0: заводський профіль DIP для Solis, один модуль допускається; перевірити зв’язок BMS, профіль Dyness LV та ліміти заряду/розряду. Потужність навантаження обмежена розрахунком струму.",
+    "min_modules": 1,
+    "automatic": true,
+    "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf"
   }
 ]
