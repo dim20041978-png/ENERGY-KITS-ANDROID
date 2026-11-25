@@ -31,7 +31,19 @@
     "voltage": 48,
     "currency": "UAH",
     "updated_at": "2026-11-25",
-    "kw": 12
+    "kw": 12,
+    "dc_min": 40,
+    "dc_max": 60,
+    "max_charge_a": 240,
+    "max_discharge_a": 240,
+    "phases": 3,
+    "ip": "IP65",
+    "communication": [
+      "CAN",
+      "RS485"
+    ],
+    "spec_source": "https://www.deyeinverter.com/deyeinverter/2026/03/19/BManualSUN-5-12K-SG04LP3-EU20260319en.pdf",
+    "spec_verified_at": "2026-11-25"
   },
   {
     "kind": "battery",
