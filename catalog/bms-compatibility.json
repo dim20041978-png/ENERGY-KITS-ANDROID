@@ -416,5 +416,128 @@
     "min_modules": 1,
     "automatic": true,
     "system": "HV"
+  },
+  {
+    "inverters": [
+      "LuxPower LXP6K",
+      "LuxPower SNA-PRO-EU-6.5K",
+      "LuxPower GEN-PRO-LB-EU-12K",
+      "LuxPower GEN3-LB-EU-8K"
+    ],
+    "batteries": [
+      "Pylontech US5000"
+    ],
+    "source": "https://luxpowertek.com/wp-content/uploads/2026/07/EU-version-Compatible-Battery-List%EF%BC%88A420260727.pdf",
+    "protocol": "CAN 02",
+    "conditions": "LUXBCEU260727, стор. 4: точна модель АКБ та сімейство інвертора; перевірити ревізію і мінімальну ємність за інструкцією конкретного інвертора, BMS і налаштування.",
+    "min_modules": 1,
+    "automatic": true,
+    "max_parallel_modules": 16,
+    "parallel_source": "https://manuals.plus/m/015bfc9290427912a8d9e7d61f75fe205a5d0c33d48c9720924ef16abe4a0ac0",
+    "setup_source": "https://manuals.plus/m/015bfc9290427912a8d9e7d61f75fe205a5d0c33d48c9720924ef16abe4a0ac0"
+  },
+  {
+    "inverters": [
+      "LuxPower SNA5000-WPV",
+      "LuxPower SNA 6000 WPV",
+      "LuxPower SNA-EU-12000",
+      "LuxPower SNA-EU-14000",
+      "LuxPower SNA2-EU-LT-14K",
+      "LuxPower TriP2-LB-3P-15K",
+      "LuxPower TriP2-LB-3P-20K"
+    ],
+    "batteries": [
+      "Pylontech US5000"
+    ],
+    "source": "https://luxpowertek.com/wp-content/uploads/2026/07/EU-version-Compatible-Battery-List%EF%BC%88A420260727.pdf",
+    "protocol": "CAN 02",
+    "conditions": "LUXBCEU260727, стор. 4: сімейство в переліку; автоматичний підбір заблоковано до підтвердження повного діапазону Li DC, мінімальної ємності або відповідності найменування TriP2-LB-EU/3P.",
+    "min_modules": 0,
+    "automatic": false,
+    "max_parallel_modules": 16,
+    "parallel_source": "https://manuals.plus/m/015bfc9290427912a8d9e7d61f75fe205a5d0c33d48c9720924ef16abe4a0ac0",
+    "setup_source": "https://manuals.plus/m/015bfc9290427912a8d9e7d61f75fe205a5d0c33d48c9720924ef16abe4a0ac0"
+  },
+  {
+    "inverters": [
+      "LuxPower LXP6K",
+      "LuxPower SNA-PRO-EU-6.5K",
+      "LuxPower GEN-PRO-LB-EU-12K",
+      "LuxPower GEN3-LB-EU-8K"
+    ],
+    "batteries": [
+      "Pylontech US3000C"
+    ],
+    "source": "https://luxpowertek.com/wp-content/uploads/2026/07/EU-version-Compatible-Battery-List%EF%BC%88A420260727.pdf",
+    "protocol": "CAN 02",
+    "conditions": "LUXBCEU260727, стор. 4: точна модель АКБ та сімейство інвертора; перевірити ревізію і мінімальну ємність за інструкцією конкретного інвертора, BMS і налаштування.",
+    "min_modules": 1,
+    "automatic": true,
+    "max_parallel_modules": 16,
+    "parallel_source": "https://manuals.plus/m/bec9aefb0ff38e9de363419a7d33461258e6d8e6ec72fd35df06f396c050b7a4",
+    "setup_source": "https://manuals.plus/m/bec9aefb0ff38e9de363419a7d33461258e6d8e6ec72fd35df06f396c050b7a4"
+  },
+  {
+    "inverters": [
+      "LuxPower SNA5000-WPV",
+      "LuxPower SNA 6000 WPV",
+      "LuxPower SNA-EU-12000",
+      "LuxPower SNA-EU-14000",
+      "LuxPower SNA2-EU-LT-14K",
+      "LuxPower TriP2-LB-3P-15K",
+      "LuxPower TriP2-LB-3P-20K"
+    ],
+    "batteries": [
+      "Pylontech US3000C"
+    ],
+    "source": "https://luxpowertek.com/wp-content/uploads/2026/07/EU-version-Compatible-Battery-List%EF%BC%88A420260727.pdf",
+    "protocol": "CAN 02",
+    "conditions": "LUXBCEU260727, стор. 4: сімейство в переліку; автоматичний підбір заблоковано до підтвердження повного діапазону Li DC, мінімальної ємності або відповідності найменування TriP2-LB-EU/3P.",
+    "min_modules": 0,
+    "automatic": false,
+    "max_parallel_modules": 16,
+    "parallel_source": "https://manuals.plus/m/bec9aefb0ff38e9de363419a7d33461258e6d8e6ec72fd35df06f396c050b7a4",
+    "setup_source": "https://manuals.plus/m/bec9aefb0ff38e9de363419a7d33461258e6d8e6ec72fd35df06f396c050b7a4"
+  },
+  {
+    "inverters": [
+      "LuxPower LXP6K",
+      "LuxPower SNA-PRO-EU-6.5K",
+      "LuxPower GEN-PRO-LB-EU-12K",
+      "LuxPower GEN3-LB-EU-8K"
+    ],
+    "batteries": [
+      "Pylontech US2000C"
+    ],
+    "source": "https://luxpowertek.com/wp-content/uploads/2026/07/EU-version-Compatible-Battery-List%EF%BC%88A420260727.pdf",
+    "protocol": "CAN 02",
+    "conditions": "LUXBCEU260727, стор. 4: точна модель АКБ та сімейство інвертора; перевірити ревізію і мінімальну ємність за інструкцією конкретного інвертора, BMS і налаштування.",
+    "min_modules": 1,
+    "automatic": true,
+    "max_parallel_modules": 16,
+    "parallel_source": "https://manuals.plus/m/029ed3ff90d1d5889db16c1e9a291e78d16af2c9b1f03f84ceacb79ef4bb048d",
+    "setup_source": "https://manuals.plus/m/029ed3ff90d1d5889db16c1e9a291e78d16af2c9b1f03f84ceacb79ef4bb048d"
+  },
+  {
+    "inverters": [
+      "LuxPower SNA5000-WPV",
+      "LuxPower SNA 6000 WPV",
+      "LuxPower SNA-EU-12000",
+      "LuxPower SNA-EU-14000",
+      "LuxPower SNA2-EU-LT-14K",
+      "LuxPower TriP2-LB-3P-15K",
+      "LuxPower TriP2-LB-3P-20K"
+    ],
+    "batteries": [
+      "Pylontech US2000C"
+    ],
+    "source": "https://luxpowertek.com/wp-content/uploads/2026/07/EU-version-Compatible-Battery-List%EF%BC%88A420260727.pdf",
+    "protocol": "CAN 02",
+    "conditions": "LUXBCEU260727, стор. 4: сімейство в переліку; автоматичний підбір заблоковано до підтвердження повного діапазону Li DC, мінімальної ємності або відповідності найменування TriP2-LB-EU/3P.",
+    "min_modules": 0,
+    "automatic": false,
+    "max_parallel_modules": 16,
+    "parallel_source": "https://manuals.plus/m/029ed3ff90d1d5889db16c1e9a291e78d16af2c9b1f03f84ceacb79ef4bb048d",
+    "setup_source": "https://manuals.plus/m/029ed3ff90d1d5889db16c1e9a291e78d16af2c9b1f03f84ceacb79ef4bb048d"
   }
 ]
