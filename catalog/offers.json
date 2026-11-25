@@ -1,1 +1,94 @@
-[]
+[
+  {
+    "kind": "inverter",
+    "model": "Deye SUN-5K-SG03LP1-EU",
+    "price": 53999,
+    "seller": "Eagle",
+    "url": "https://eagle.com.ua/deye/",
+    "voltage": 48,
+    "currency": "UAH",
+    "updated_at": "2026-11-25",
+    "kw": 5
+  },
+  {
+    "kind": "inverter",
+    "model": "Deye SUN-12K-SG04LP3-EU",
+    "price": 106299,
+    "seller": "Eagle",
+    "url": "https://eagle.com.ua/deye/",
+    "voltage": 48,
+    "currency": "UAH",
+    "updated_at": "2026-11-25",
+    "kw": 12
+  },
+  {
+    "kind": "battery",
+    "model": "Deye SE-G5.1 Pro-B",
+    "price": 39999,
+    "seller": "Eagle",
+    "url": "https://eagle.com.ua/deye/",
+    "voltage": 51.2,
+    "currency": "UAH",
+    "updated_at": "2026-11-25",
+    "ah": 100,
+    "voltage_min": 43.2,
+    "voltage_max": 57.6
+  },
+  {
+    "kind": "battery",
+    "model": "Deye SE-G5.1 Pro-B",
+    "price": 43499,
+    "seller": "Deye Energy",
+    "url": "https://deye.energy/akumuliatorna-batareia/",
+    "voltage": 51.2,
+    "currency": "UAH",
+    "updated_at": "2026-11-25",
+    "ah": 100,
+    "voltage_min": 43.2,
+    "voltage_max": 57.6
+  },
+  {
+    "kind": "battery",
+    "model": "Deye SE-F5 Pro-C",
+    "price": 41499,
+    "seller": "Deye Energy",
+    "url": "https://deye.energy/akumuliatorna-batareia/",
+    "voltage": 51.2,
+    "currency": "UAH",
+    "updated_at": "2026-11-25",
+    "ah": 100
+  },
+  {
+    "kind": "battery",
+    "model": "Deye SE-F12-C",
+    "price": 87999,
+    "seller": "Deye Energy",
+    "url": "https://deye.energy/akumuliatorna-batareia/",
+    "voltage": 51.2,
+    "currency": "UAH",
+    "updated_at": "2026-11-25",
+    "ah": 230
+  },
+  {
+    "kind": "battery",
+    "model": "Deye SE-F16-C",
+    "price": 91499,
+    "seller": "Deye Energy",
+    "url": "https://deye.energy/akumuliatorna-batareia/",
+    "voltage": 51.2,
+    "currency": "UAH",
+    "updated_at": "2026-11-25",
+    "ah": 314
+  },
+  {
+    "kind": "battery",
+    "model": "Deye SE-F16 Max",
+    "price": 104199,
+    "seller": "Deye Energy",
+    "url": "https://deye.energy/akumuliatorna-batareia/",
+    "voltage": 51.2,
+    "currency": "UAH",
+    "updated_at": "2026-11-25",
+    "ah": 314
+  }
+]
