@@ -65,9 +65,19 @@ public class CompatibilityCatalogTest {
 
     @Test
     public void aFamilyOnlyMatchRequiresManualReview() {
+        JSONObject other = model("SRNE ASF4880S180-H");
+        assertNotNull(catalog.bmsRule(other, battery));
+        assertFalse(catalog.bmsRule(other, battery).optBoolean("automatic"));
+        assertFalse(catalog.canRecommend(other, battery, 3));
+    }
+
+    @Test
+    public void newlyApprovedDeyeRevisionSupportsRequestedLoad() {
         JSONObject other = model("Deye SUN-12K-SG05LP3-EU-SM2");
         assertNotNull(catalog.bmsRule(other, battery));
-        assertFalse(catalog.canRecommend(other, battery, 3));
+        assertTrue(catalog.bmsRule(other, battery).optBoolean("automatic"));
+        assertTrue(catalog.canRecommend(other, battery, 3));
+        assertFalse(catalog.canRecommend(other, battery, 12));
     }
 
     @Test
