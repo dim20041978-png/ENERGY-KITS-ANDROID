@@ -72,13 +72,27 @@ def type_value(hint, value):
     adb('shell', 'input', 'text', value)
     adb('shell', 'input', 'keyevent', '4')
 
+def wait_for_app():
+    for _ in range(4):
+        nodes=dump()
+        if any(n.get('package')==PACKAGE for n in nodes):
+            return
+        if any("Launcher isn't responding" in text(n) for n in nodes):
+            close=next(n for n in nodes if text(n)=='Close app')
+            tap(close)
+        adb('shell','am','start','-W','-n',ACTIVITY)
+        time.sleep(2)
+    search(lambda n: n.get('package')==PACKAGE, seconds=45)
+
 adb('shell','input','keyevent','82')
+adb('shell','settings','put','secure','show_ime_with_hard_keyboard','1')
 for setting in ('window_animation_scale','transition_animation_scale','animator_duration_scale'):
     adb('shell','settings','put','global',setting,'0')
 device_size=adb('shell','wm','size').splitlines()[-1]
 width,height=map(int,re.search(r'(\d+)x(\d+)',device_size).groups())
 adb('install','-r',str(APP))
 adb('shell','am','start','-W','-n',ACTIVITY)
+wait_for_app()
 type_value('Потужність інвертора, кВт','3')
 type_value('Ємність акумулятора, А·год','310')
 type_value('Напруга системи, В','48')
@@ -94,7 +108,7 @@ assert INVERTER+' + '+BATTERY in saved,'Kit missing from the preferences on disk
 adb('shell','am','force-stop',PACKAGE)
 started=adb('shell','am','start','-W','-n',ACTIVITY)
 assert 'Error' not in started, started
-search(lambda n: n.get('package')==PACKAGE, seconds=45)
+wait_for_app()
 tap(look('Порівняти збережені'))
 search(lambda n: INVERTER+' + '+BATTERY in text(n))
 print('PASS red Exit persists the kit to disk and it appears in comparison after process restart',flush=True)
