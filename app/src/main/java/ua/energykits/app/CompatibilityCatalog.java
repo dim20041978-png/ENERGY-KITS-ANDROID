@@ -75,7 +75,7 @@ final class CompatibilityCatalog {
         JSONObject batterySpec = specification(battery);
         JSONObject i = inverterSpec == null ? inverter : inverterSpec;
         JSONObject b = batterySpec == null ? battery : batterySpec;
-        if (b.optBoolean("requires_hv_system") ||
+        if (!ParallelBatteryPlanner.systemMatches(i, b, bmsRule(inverter, battery)) ||
                 CompatibilityMath.voltageConflict(i.optDouble("voltage"), b.optDouble("voltage"),
                         i.optDouble("dc_min"), i.optDouble("dc_max"),
                         b.optDouble("voltage_min"), b.optDouble("voltage_max"))) {
@@ -86,7 +86,7 @@ final class CompatibilityCatalog {
             return "Для цієї пари виробник вимагає щонайменше " +
                     rule.optInt("min_modules") + " модулі АКБ";
         }
-        if (modules(battery) > 1 && !canUseBank(inverter, battery, loadKw)) {
+        if ((modules(battery) > 1 || b.optBoolean("requires_hv_system")) && !canUseBank(inverter, battery, loadKw)) {
             return "Кількість модулів або паспортні параметри банку АКБ не підтверджені";
         }
         if (batterySpec != null) {
@@ -138,7 +138,7 @@ final class CompatibilityCatalog {
         JSONObject rule = bmsRule(inverter, battery);
         int minimum = minimumModules(inverter, battery, loadKw, 0);
         return n >= 1 && minimum >= 1 && n >= minimum && rule != null &&
-                (n == 1 || (rule.optString("parallel_source").startsWith("https://") &&
+                (n == 1 || (!"HV".equals(rule.optString("system")) && rule.optString("parallel_source").startsWith("https://") &&
                  n <= Math.min(64, rule.optInt("max_parallel_modules", 1))));
     }
 
