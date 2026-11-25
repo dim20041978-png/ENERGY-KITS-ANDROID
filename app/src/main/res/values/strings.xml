@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="kit_summary">Інвертор: %1$s — %2$s\nАКБ: %3$s — %4$s\nНапруга: %5$s В | Енергія: %6$s\n%7$s\nРазом: %8$s</string>
+    <string name="no_confirmed_kit">Для заданої потужності не знайдено комплекту з підтвердженими напругою, струмами й BMS. Перегляньте інші пропозиції.</string>
+    <string name="manual_pair_summary">Інвертор: %1$s\nАКБ: %2$s</string>
+</resources>

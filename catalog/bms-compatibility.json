@@ -1,0 +1,152 @@
+[
+  {
+    "inverters": [
+      "Deye SUN-5K-SG03LP1-EU",
+      "Deye SUN-12K-SG04LP3-EU"
+    ],
+    "batteries": [
+      "Dyness PowerBrick Plus"
+    ],
+    "source": "https://dyness.com/Public/Uploads/uploadfile/files/20251216/DynessLowvoltageBatteriesCampatibilityList20251201.pdf",
+    "protocol": "CAN",
+    "conditions": "Серії інверторів і модель АКБ є в таблиці Dyness. Застосуйте профіль Deye з інструкції АКБ та перевірте зв’язок BMS.",
+    "min_modules": 1,
+    "automatic": true,
+    "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf"
+  },
+  {
+    "inverters": [
+      "Deye SUN-5K-SG03LP1-EU",
+      "Deye SUN-12K-SG04LP3-EU"
+    ],
+    "batteries": [
+      "Dyness B4850",
+      "Dyness DL5.0C"
+    ],
+    "source": "https://dyness.com/Public/Uploads/uploadfile/files/20251216/DynessLowvoltageBatteriesCampatibilityList20251201.pdf",
+    "protocol": "BMS Dyness",
+    "conditions": "Пара є в таблиці Dyness. Перевірте протокол, прошивку та мінімальну кількість модулів для вашої ревізії.",
+    "min_modules": 0,
+    "automatic": false
+  },
+  {
+    "inverters": [
+      "Deye SUN-5K-SG03LP1-EU",
+      "Deye SUN-12K-SG04LP3-EU"
+    ],
+    "batteries": [
+      "Dyness BX51100"
+    ],
+    "source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20241231/DynesscampatiblelistLV241015200.pdf",
+    "protocol": "BMS Dyness",
+    "conditions": "Пара є в таблиці Dyness 2024 року. Підтвердьте підтримку ревізії та прошивки.",
+    "min_modules": 0,
+    "automatic": false
+  },
+  {
+    "inverters": [
+      "Deye SUN-12K-SG05LP3-EU-SM2"
+    ],
+    "batteries": [
+      "Dyness PowerBrick Plus",
+      "Dyness B4850",
+      "Dyness DL5.0C"
+    ],
+    "source": "https://dyness.com/Public/Uploads/uploadfile/files/20251216/DynessLowvoltageBatteriesCampatibilityList20251201.pdf",
+    "protocol": "BMS Dyness",
+    "conditions": "У списку Dyness є сімейство SG05LP3. Підтвердьте модифікацію EU-SM2 і прошивку.",
+    "min_modules": 0,
+    "automatic": false
+  },
+  {
+    "inverters": [
+      "Growatt SPF 5000 ES"
+    ],
+    "batteries": [
+      "Dyness PowerBrick Plus"
+    ],
+    "source": "https://dyness.com/Public/Uploads/uploadfile/files/20251216/DynessLowvoltageBatteriesCampatibilityList20251201.pdf",
+    "protocol": "RS485",
+    "conditions": "Інструкція PowerBrick Plus окремо описує Growatt SPF ES з RS485. Звірте робочий діапазон і межу струму розряду інвертора.",
+    "min_modules": 0,
+    "automatic": false,
+    "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf"
+  },
+  {
+    "inverters": [
+      "Growatt SPM 6000TL-HU",
+      "Growatt SPM 8000TL-HU",
+      "LuxPower SNA5000-WPV",
+      "LuxPower SNA 6000 WPV",
+      "LuxPower LXP6K"
+    ],
+    "batteries": [
+      "Dyness PowerBrick Plus",
+      "Dyness B4850",
+      "Dyness DL5.0C"
+    ],
+    "source": "https://dyness.com/Public/Uploads/uploadfile/files/20251216/DynessLowvoltageBatteriesCampatibilityList20251201.pdf",
+    "protocol": "BMS Dyness",
+    "conditions": "Таблиця Dyness містить сімейство інверторів. Для підключення потрібні паспорт ревізії та параметри зв’язку.",
+    "min_modules": 0,
+    "automatic": false
+  },
+  {
+    "inverters": [
+      "LuxPower SNA5000-WPV",
+      "LuxPower SNA 6000 WPV",
+      "LuxPower LXP6K",
+      "LuxPower SNA-EU-12000",
+      "LuxPower SNA-EU-14000"
+    ],
+    "batteries": [
+      "Pylontech US2000C",
+      "Pylontech US3000C",
+      "Pylontech US5000"
+    ],
+    "source": "https://luxpowertek.com/downloads/",
+    "protocol": "Профіль LuxPower 2",
+    "conditions": "Список LuxPower містить ці сімейства інверторів та моделі Pylontech. Звірте порт, кабель і потрібну кількість АКБ.",
+    "min_modules": 0,
+    "automatic": false
+  },
+  {
+    "inverters": [
+      "Victron Energy MultiPlus-II 48/5000/70-50 GX",
+      "Victron Energy MultiPlus-II 48/6k5/100-50 GX",
+      "Victron Energy Multi RS19 Solar PMR482602030",
+      "Victron Energy Inverter RS Smart Solar PIN482601000",
+      "Victron Energy Multi RS Solar PMR482602000"
+    ],
+    "batteries": [
+      "Dyness DL5.0C",
+      "Dyness PowerHaus",
+      "Dyness PowerBrick Plus",
+      "Dyness PowerBrick Max"
+    ],
+    "source": "https://www.victronenergy.com/live/battery_compatibility:dyness",
+    "protocol": "BMS-CAN",
+    "conditions": "Потрібні GX, налаштований DVCC, сумісна прошивка та достатня кількість модулів. MultiPlus-II GX має вбудований GX.",
+    "min_modules": 0,
+    "automatic": false
+  },
+  {
+    "inverters": [
+      "Victron Energy MultiPlus-II 48/5000/70-50 GX",
+      "Victron Energy MultiPlus-II 48/6k5/100-50 GX",
+      "Victron Energy Multi RS19 Solar PMR482602030",
+      "Victron Energy Inverter RS Smart Solar PIN482601000",
+      "Victron Energy Multi RS Solar PMR482602000"
+    ],
+    "batteries": [
+      "Pylontech US2000C",
+      "Pylontech US3000C",
+      "Pylontech US5000"
+    ],
+    "source": "https://www.victronenergy.com/live/battery_compatibility:pylontech_phantom",
+    "protocol": "BMS-CAN",
+    "conditions": "Виробник вимагає GX, сумісну прошивку та мінімальну кількість модулів для пускового струму.",
+    "min_modules": 0,
+    "automatic": false
+  }
+]
