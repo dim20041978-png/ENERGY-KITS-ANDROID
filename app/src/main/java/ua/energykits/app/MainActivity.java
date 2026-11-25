@@ -219,7 +219,7 @@ public class MainActivity extends Activity {
  if(!problem.isEmpty())result.append("\n").append(problem);
  return result.toString();
  }
- boolean savePair(JSONObject x,JSONObject y){if(!conflict(x,y).isEmpty()){Toast.makeText(this,conflict(x,y),Toast.LENGTH_LONG).show();return false;}try{double i=x.optDouble("price"),b=y.optDouble("price");if(!(i>0&&b>0)||Double.isInfinite(i+b))throw new IllegalArgumentException();JSONObject k=new JSONObject();k.put("name",x.optString("model")+" + "+batteryName(y));k.put("price",i+b);double v=y.optDouble("voltage",0),a=y.optDouble("ah",0);k.put("energy",v*a/1000);k.put("note",pairCheck(x,y));k.put("inverter_source",x.optString("seller")+" | "+x.optString("updated_at")+" | "+x.optString("url"));k.put("battery_source",y.optString("seller")+" | "+y.optString("updated_at")+" | "+y.optString("url"));k.put("inverter_offer",x);k.put("battery_offer",y);kits.put(k);save();render();return true;}catch(Exception ex){Toast.makeText(this,"Не вдалося зберегти комплект",Toast.LENGTH_LONG).show();return false;}}
+ boolean savePair(JSONObject x,JSONObject y){if(!conflict(x,y).isEmpty()){Toast.makeText(this,conflict(x,y),Toast.LENGTH_LONG).show();return false;}try{double i=x.optDouble("price"),b=y.optDouble("price");if(!(i>0&&b>0)||Double.isInfinite(i+b))throw new IllegalArgumentException();JSONObject k=new JSONObject();k.put("name",x.optString("model")+" + "+batteryName(y));k.put("price",i+b);double v=y.optDouble("voltage",0),a=y.optDouble("ah",0);k.put("energy",v*a/1000);k.put("note",pairCheck(x,y)+applianceReport(x,y));k.put("inverter_source",x.optString("seller")+" | "+x.optString("updated_at")+" | "+x.optString("url"));k.put("battery_source",y.optString("seller")+" | "+y.optString("updated_at")+" | "+y.optString("url"));k.put("inverter_offer",x);k.put("battery_offer",y);kits.put(k);save();render();return true;}catch(Exception ex){Toast.makeText(this,"Не вдалося зберегти комплект",Toast.LENGTH_LONG).show();return false;}}
  JSONObject exactOffer(java.util.List<JSONObject> list,JSONObject old){
  JSONObject alternative=null;
  for(JSONObject o:list){
@@ -238,7 +238,7 @@ public class MainActivity extends Activity {
        .append(offerLabel(x)).append("\n").append(x.optString("url")).append("\n\n")
        .append(offerLabel(y)).append("\n").append(y.optString("url"))
        .append("\n\nРазом: ").append(totalPrice(x,y))
-       .append("\n\n").append(pairCheck(x,y));
+       .append("\n\n").append(pairCheck(x,y)).append(applianceReport(x,y));
  JSONObject inverterSpec=compatibility.specification(x),batterySpec=compatibility.specification(y);
  JSONObject bmsRule=compatibility.bmsRule(x,y);
  if(inverterSpec!=null)report.append("\n\nПаспорт інвертора\n").append(inverterSpec.optString("spec_source"));
@@ -266,7 +266,102 @@ public class MainActivity extends Activity {
  }catch(Exception ex){Toast.makeText(this,"Введіть дві коректні додатні ціни",Toast.LENGTH_LONG).show();}});
  pageButton(body,"Скасувати",d::dismiss);d.show();
  }
- void pairResult(JSONObject x,JSONObject y){showPreview(x,y);Dialog d=new Dialog(this,android.R.style.Theme_Material_NoActionBar);LinearLayout body=page(d,"Вибраний енергокомплект");offerPhoto(body,x);pageText(body,offerLabel(x),20);offerLink(body,x);offerPhoto(body,y);pageText(body,offerLabel(y),20);offerLink(body,y);pageText(body,"Разом: "+totalPrice(x,y),24);pageText(body,pairCheck(x,y),17);pageButton(body,"PDF / Друк",()->printPair(x,y));pageButton(body,"Оновити ціни",()->refreshPair(d,x,y));pageButton(body,"Ввести ціни вручну",()->manualPrices(d,x,y));pageButton(body,"Порівняти комплекти",()->compareKits(x,y));pageButton(body,"Зберегти комплект",()->{if(savePair(x,y)){d.dismiss();Toast.makeText(this,"Комплект збережено",Toast.LENGTH_SHORT).show();}});pageButton(body,"Зберегти та додати інший комплект",()->{if(savePair(x,y)){d.dismiss();for(EditText e:new EditText[]{inv,bat,ip,bp,iv,bv,ah,bms,watts})e.setText("");inverterOffer=null;batteryOffer=null;watts.requestFocus();}});pageButton(body,"Вихід",()->{if(savePair(x,y)){d.dismiss();finish();}});pageButton(body,"Назад",d::dismiss);d.show();}
+ String applianceKey(JSONObject x,JSONObject y){
+ return "appliances_v1:"+x.optString("model")+"|"+y.optString("model")+"|"+CompatibilityCatalog.modules(y)+"|"+loadFor(x);
+ }
+ JSONObject applianceProfile(JSONObject x,JSONObject y){
+ try{return new JSONObject(getPreferences(Context.MODE_PRIVATE).getString(applianceKey(x,y),"{}"));}catch(JSONException ex){return new JSONObject();}
+ }
+ double applianceLimit(JSONObject x,JSONObject y){
+ double requested=loadFor(x);
+ return positiveFinite(requested)&&compatibility.canRecommend(x,y,requested)?requested*1000:Double.NaN;
+ }
+ double applianceEnergy(JSONObject y){return y.optDouble("voltage")*y.optDouble("ah");}
+ String applianceNumber(double n){return String.format(Locale.US,"%.2f",n).replaceAll("0+$","").replaceAll("\\.$","").replace('.',',');}
+ TextView applianceText(String value,int size){
+ TextView t=new TextView(this);t.setText(value);t.setTextSize(size);t.setTextColor(Color.WHITE);return t;
+ }
+ EditText applianceInput(String value,String description){
+ EditText e=new EditText(this);e.setSingleLine(true);e.setTextColor(Color.WHITE);e.setTextSize(14);
+ e.setGravity(Gravity.CENTER);e.setPadding(dp(3),dp(7),dp(3),dp(7));e.setBackground(gloss(0xff102e59,0xff071b3d));
+ e.setInputType(android.text.InputType.TYPE_CLASS_NUMBER|android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
+ e.setContentDescription(description);e.setText(value);return e;
+ }
+ String applianceReport(JSONObject x,JSONObject y){
+ JSONObject profile=applianceProfile(x,y);
+ JSONArray rows=profile.optJSONArray("rows");if(rows==null||rows.length()!=ApplianceUsage.NAMES.length)return "";
+ double w=0,wh=0;StringBuilder out=new StringBuilder("\n\nЕлектроприлади та автономність (орієнтовно)\n");
+ boolean start=false;int selected=0;
+ for(int i=0;i<rows.length();i++){JSONObject row=rows.optJSONObject(i);if(row==null||!row.optBoolean("on"))continue;
+ double p=row.optDouble("w"),h=row.optDouble("h");if(!positiveFinite(p)||h<0||h>24||Double.isNaN(h))return "";
+ selected++;w+=p;wh+=ApplianceUsage.dailyWh(p,h);start|=ApplianceUsage.START_CHECK[i];
+ out.append(ApplianceUsage.NAMES[i]).append(": ").append(applianceNumber(p)).append(" Вт; ").append(applianceNumber(h)).append(" год/добу\n");}
+ if(selected==0)return "";
+ double limit=applianceLimit(x,y),runtime=ApplianceUsage.runtimeHours(applianceEnergy(y),w);
+ out.append("Одночасне навантаження: ").append(applianceNumber(w)).append(" Вт\nДобове споживання: ").append(applianceNumber(wh/1000)).append(" кВт·год");
+ if(positiveFinite(limit)&&w<=limit&&positiveFinite(runtime))out.append("\nАвтономність при одночасній роботі: ").append(applianceNumber(runtime)).append(" год");
+ else out.append("\nАвтономність не підтверджено: перевірте навантаження та сумісність.");
+ if(start)out.append("\nПускові навантаження потребують окремої паспортної перевірки.");
+ if(x.optInt("phases")!=1)out.append("\nПеревірте фазність і допустиме навантаження кожної фази.");
+ out.append("\nОцінка: 90% доступної ємності, ККД 90%, власне споживання 30 Вт.");
+ return out.toString();
+ }
+ void applianceScreen(JSONObject x,JSONObject y){
+ Dialog d=new Dialog(this,android.R.style.Theme_Material_NoActionBar);
+ LinearLayout body=page(d,"⚡ ЕЛЕКТРОПРИЛАДИ ТА АВТОНОМНІСТЬ");
+ double limit=applianceLimit(x,y),energy=applianceEnergy(y);
+ LinearLayout info=new LinearLayout(this);info.setOrientation(LinearLayout.VERTICAL);info.setPadding(dp(12),dp(10),dp(12),dp(10));info.setBackground(gloss(0xff153d70,0xff081c3c));body.addView(info);
+ pageText(info,"ХАРАКТЕРИСТИКИ СИСТЕМИ\nІнвертор: "+x.optString("model")+" ("+x.optString("kw")+" кВт)\nАКБ: "+batteryName(y)+"\n"+y.optString("voltage")+" В / "+y.optString("ah")+" А·год\nЕнергоємність: "+(positiveFinite(energy)?applianceNumber(energy/1000)+" кВт·год":"невідома")+"\nРозрахункове навантаження: "+(positiveFinite(limit)?applianceNumber(limit/1000)+" кВт":"не підтверджено"),16);
+ pageText(body,"Позначте прилади. Змінюйте Вт та години прямо в таблиці. Значення за замовчуванням орієнтовні; використовуйте фактичну споживану потужність.",14);
+ LinearLayout header=new LinearLayout(this);header.setGravity(Gravity.CENTER_VERTICAL);
+ TextView h1=applianceText("Електроприлад",13),h2=applianceText("Вт",13),h3=applianceText("Год/добу",13);h2.setGravity(Gravity.CENTER);h3.setGravity(Gravity.CENTER);
+ header.addView(h1,new LinearLayout.LayoutParams(0,-2,1));header.addView(h2,new LinearLayout.LayoutParams(dp(65),-2));header.addView(h3,new LinearLayout.LayoutParams(dp(65),-2));body.addView(header);
+ int count=ApplianceUsage.NAMES.length;EditText[] powers=new EditText[count],hours=new EditText[count];CheckBox[] selected=new CheckBox[count];
+ TextView[] indicators=new TextView[count];TextView totals=applianceText("",16);totals.setPadding(dp(10),dp(12),dp(10),dp(12));totals.setBackground(gloss(0xff153d70,0xff081c3c));
+ JSONArray stored=applianceProfile(x,y).optJSONArray("rows");
+ for(int i=0;i<count;i++){
+ JSONObject old=stored==null?null:stored.optJSONObject(i);LinearLayout line=new LinearLayout(this);line.setGravity(Gravity.CENTER_VERTICAL);line.setPadding(0,dp(6),0,dp(6));
+ CheckBox check=new CheckBox(this);check.setTextColor(Color.WHITE);check.setButtonTintList(android.content.res.ColorStateList.valueOf(0xff67d9ff));check.setContentDescription("Включити "+ApplianceUsage.NAMES[i]);check.setChecked(old==null?i<5:old.optBoolean("on"));selected[i]=check;line.addView(check,new LinearLayout.LayoutParams(dp(42),-2));
+ LinearLayout nameBlock=new LinearLayout(this);nameBlock.setOrientation(LinearLayout.VERTICAL);nameBlock.addView(applianceText(ApplianceUsage.NAMES[i],14));indicators[i]=applianceText("",11);nameBlock.addView(indicators[i]);line.addView(nameBlock,new LinearLayout.LayoutParams(0,-2,1));
+ powers[i]=applianceInput(old==null?applianceNumber(ApplianceUsage.WATTS[i]):old.optString("w",applianceNumber(ApplianceUsage.WATTS[i])),"Потужність: "+ApplianceUsage.NAMES[i]);
+ hours[i]=applianceInput(old==null?applianceNumber(ApplianceUsage.HOURS[i]):old.optString("h",applianceNumber(ApplianceUsage.HOURS[i])),"Години на добу: "+ApplianceUsage.NAMES[i]);
+ LinearLayout.LayoutParams wp=new LinearLayout.LayoutParams(dp(65),-2);wp.setMargins(dp(2),0,dp(2),0);line.addView(powers[i],wp);
+ LinearLayout.LayoutParams hp=new LinearLayout.LayoutParams(dp(65),-2);hp.setMargins(dp(2),0,0,0);line.addView(hours[i],hp);body.addView(line);
+ View sep=new View(this);sep.setBackgroundColor(0xff34618b);body.addView(sep,new LinearLayout.LayoutParams(-1,dp(1)));
+ }
+ Runnable recalc=()->{
+ double w=0,wh=0;boolean valid=true,start=false;
+ for(int i=0;i<count;i++){double p=ApplianceUsage.parse(powers[i].getText().toString(),false),h=ApplianceUsage.parse(hours[i].getText().toString(),true);
+ boolean good=positiveFinite(p)&&!Double.isNaN(h);
+ powers[i].setError(positiveFinite(p)?null:"Вкажіть додатні Вт");hours[i].setError(!Double.isNaN(h)?null:"0–24 години");
+ TextView indicator=indicators[i];
+ if(!good){indicator.setText("Некоректні дані");indicator.setTextColor(0xffff7777);if(selected[i].isChecked())valid=false;}
+ else if(!positiveFinite(limit)){indicator.setText("Межа невідома");indicator.setTextColor(0xffffdb70);}
+ else if(p>limit){indicator.setText("Перевищення");indicator.setTextColor(0xffff7777);}
+ else if(ApplianceUsage.START_CHECK[i]||x.optInt("phases")!=1){indicator.setText("Потрібна перевірка");indicator.setTextColor(0xffffdb70);}
+ else{indicator.setText("Окремо за Вт");indicator.setTextColor(0xff83e69a);}
+ if(good&&selected[i].isChecked()){w+=p;wh+=ApplianceUsage.dailyWh(p,h);start|=ApplianceUsage.START_CHECK[i];}
+ }
+ String message="Загальне одночасне навантаження: "+applianceNumber(w)+" Вт\nДобове споживання: "+applianceNumber(wh/1000)+" кВт·год";
+ boolean safe=valid&&positiveFinite(limit)&&w<=limit;
+ if(!valid)message+="\nВиправте некоректні дані вибраних приладів.";
+ else if(!positiveFinite(limit))message+="\nДопустиме навантаження комплекту не підтверджено.";
+ else if(w>limit)message+="\nПЕРЕВИЩЕНО РОЗРАХУНКОВЕ НАВАНТАЖЕННЯ!";
+ else if(w>0){double runtime=ApplianceUsage.runtimeHours(energy,w);
+ if(positiveFinite(runtime))message+="\nОрієнтовна автономність при одночасній роботі: "+applianceNumber(runtime)+" год";
+ if(positiveFinite(energy))message+="\nЕнергія АКБ на добу (з втратами): "+applianceNumber(ApplianceUsage.dailyBatteryWh(wh)/1000)+" кВт·год";
+ if(start)message+="\nПускові струми потребують перевірки.";
+ if(x.optInt("phases")!=1)message+="\nПеревірте фазність і навантаження кожної фази.";
+ }else message+="\nОберіть прилади.";
+ totals.setText(message);totals.setTextColor(!safe?0xffff7777:(start||x.optInt("phases")!=1?0xffffdb70:0xff83e69a));
+ };
+ android.text.TextWatcher watcher=new android.text.TextWatcher(){public void beforeTextChanged(CharSequence s,int st,int c,int a){}public void onTextChanged(CharSequence s,int st,int before,int count){recalc.run();}public void afterTextChanged(android.text.Editable e){}};
+ for(int i=0;i<count;i++){powers[i].addTextChangedListener(watcher);hours[i].addTextChangedListener(watcher);selected[i].setOnCheckedChangeListener((v,c)->recalc.run());}
+ body.addView(totals);pageText(body,"Оцінка: 90% ємності АКБ, ККД 90%, власне споживання інвертора 30 Вт. Не враховано пускові ВА та конкретний режим роботи; не є гарантією сумісності.",13);
+ pageButton(body,"ЗБЕРЕГТИ",()->{try{JSONArray rows=new JSONArray();for(int i=0;i<count;i++){double p=ApplianceUsage.parse(powers[i].getText().toString(),false),h=ApplianceUsage.parse(hours[i].getText().toString(),true);if(!positiveFinite(p)||Double.isNaN(h)){Toast.makeText(this,"Виправте Вт та години (0–24)",Toast.LENGTH_LONG).show();return;}rows.put(new JSONObject().put("w",p).put("h",h).put("on",selected[i].isChecked()));}getPreferences(Context.MODE_PRIVATE).edit().putString(applianceKey(x,y),new JSONObject().put("rows",rows).toString()).apply();Toast.makeText(this,"Параметри збережено",Toast.LENGTH_SHORT).show();}catch(JSONException ex){Toast.makeText(this,"Не вдалося зберегти",Toast.LENGTH_SHORT).show();}});
+ pageButton(body,"НАЗАД",d::dismiss);recalc.run();d.show();
+ }
+ void pairResult(JSONObject x,JSONObject y){showPreview(x,y);Dialog d=new Dialog(this,android.R.style.Theme_Material_NoActionBar);LinearLayout body=page(d,"Вибраний енергокомплект");offerPhoto(body,x);pageText(body,offerLabel(x),20);offerLink(body,x);offerPhoto(body,y);pageText(body,offerLabel(y),20);offerLink(body,y);pageText(body,"Разом: "+totalPrice(x,y),24);pageText(body,pairCheck(x,y),17);pageButton(body,"ЕЛЕКТРОПРИЛАДИ ТА АВТОНОМНІСТЬ",()->applianceScreen(x,y));pageButton(body,"PDF / Друк",()->printPair(x,y));pageButton(body,"Оновити ціни",()->refreshPair(d,x,y));pageButton(body,"Ввести ціни вручну",()->manualPrices(d,x,y));pageButton(body,"Порівняти комплекти",()->compareKits(x,y));pageButton(body,"Зберегти комплект",()->{if(savePair(x,y)){d.dismiss();Toast.makeText(this,"Комплект збережено",Toast.LENGTH_SHORT).show();}});pageButton(body,"Зберегти та додати інший комплект",()->{if(savePair(x,y)){d.dismiss();for(EditText e:new EditText[]{inv,bat,ip,bp,iv,bv,ah,bms,watts})e.setText("");inverterOffer=null;batteryOffer=null;watts.requestFocus();}});pageButton(body,"Вихід",()->{if(savePair(x,y)){d.dismiss();finish();}});pageButton(body,"Назад",d::dismiss);d.show();}
  void compareKits(JSONObject x,JSONObject y){
  Dialog d=new Dialog(this,android.R.style.Theme_Material_NoActionBar);LinearLayout body=page(d,"Порівняння комплектів");
  ArrayList<JSONObject> list=new ArrayList<>();for(int i=0;i<kits.length();i++){JSONObject k=kits.optJSONObject(i);if(k!=null)list.add(k);}
