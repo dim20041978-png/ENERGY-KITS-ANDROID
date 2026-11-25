@@ -13,6 +13,23 @@ public class HighVoltageKitTest {
             return OfferSource.read(input);
         }
     }
+    @Test public void matrixHasAtLeastOneHundredUniqueAutomaticRules() throws Exception {
+        JSONArray rules = resource("bms-compatibility.json");
+        java.util.Map<String, Boolean> unique = new java.util.HashMap<>();
+        for (int n = 0; n < rules.length(); n++) {
+            JSONObject rule = rules.getJSONObject(n);
+            JSONArray inverters = rule.getJSONArray("inverters");
+            JSONArray batteries = rule.getJSONArray("batteries");
+            for (int i = 0; i < inverters.length(); i++)
+                for (int b = 0; b < batteries.length(); b++)
+                    unique.put(inverters.getString(i) + "\n" + batteries.getString(b),
+                            rule.optBoolean("automatic") && rule.optInt("min_modules") >= 1);
+        }
+        int count = 0;
+        for (boolean enabled : unique.values()) if (enabled) count++;
+        assertTrue("Unique automatic BMS rules: " + count, count >= 100);
+    }
+
     @Test public void completeStackSupportsTwentyKwWithoutMixingVoltageClasses() throws Exception {
         JSONArray offers = resource("offers.json");
         CompatibilityCatalog catalog = new CompatibilityCatalog(offers, resource("bms-compatibility.json"));
