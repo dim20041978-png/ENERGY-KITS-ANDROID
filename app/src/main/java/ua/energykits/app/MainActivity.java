@@ -4,11 +4,11 @@ public class MainActivity extends Activity {
  LinearLayout root, results, fieldHost; EditText inv,bat,ip,bp,iv,bv,ah,bms,watts; JSONArray kits=new JSONArray();
  
  class EquipmentArt extends View {
- final int kind; final android.graphics.Paint p=new android.graphics.Paint(3);
- EquipmentArt(int k){super(MainActivity.this);kind=k;setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);}
+ final int kind; android.graphics.Bitmap photo; final android.graphics.Paint p=new android.graphics.Paint(3);
+ EquipmentArt(int k){super(MainActivity.this);kind=k;try(java.io.InputStream in=getAssets().open(new String[]{"inverter.jpg","battery.jpg","solar_house.jpg"}[k])){photo=android.graphics.BitmapFactory.decodeStream(in);}catch(java.io.IOException ignored){}setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);}
  void rect(android.graphics.Canvas c,int color,float x,float y,float w,float h,float radius){p.setColor(color);c.drawRoundRect(x,y,x+w,y+h,radius,radius,p);}
  void poly(android.graphics.Canvas c,int color,float... xy){p.setColor(color);android.graphics.Path q=new android.graphics.Path();q.moveTo(xy[0],xy[1]);for(int i=2;i<xy.length;i+=2)q.lineTo(xy[i],xy[i+1]);q.close();c.drawPath(q,p);}
- protected void onDraw(android.graphics.Canvas c){super.onDraw(c);float scale=Math.min(getWidth()/100f,getHeight()/120f);c.save();c.translate((getWidth()-100*scale)/2,(getHeight()-120*scale)/2);c.scale(scale,scale);
+ protected void onDraw(android.graphics.Canvas c){super.onDraw(c);if(photo!=null){float ratio=Math.min(getWidth()/(float)photo.getWidth(),getHeight()/(float)photo.getHeight());float w=photo.getWidth()*ratio,h=photo.getHeight()*ratio; c.drawBitmap(photo,null,new android.graphics.RectF((getWidth()-w)/2,(getHeight()-h)/2,(getWidth()+w)/2,(getHeight()+h)/2),p);return;}float scale=Math.min(getWidth()/100f,getHeight()/120f);c.save();c.translate((getWidth()-100*scale)/2,(getHeight()-120*scale)/2);c.scale(scale,scale);
  p.setColor(0x5522cfff);c.drawOval(2,18,98,110,p);
  if(kind==0){rect(c,0xff8294aa,13,12,76,99,8);rect(c,0xffedf5ff,9,9,75,97,8);rect(c,0xffc4d4e6,14,15,65,5,2);rect(c,0xff101b26,27,68,39,25,4);rect(c,0xff53c967,33,73,27,9,2);for(int i=0;i<3;i++)rect(c,0xffaab8c9,33+i*10,85,5,3,1);rect(c,0xff26394e,21,106,9,7,2);rect(c,0xff26394e,65,106,9,7,2);}
  else if(kind==1){rect(c,0xff101820,8,40,85,68,5);poly(c,0xff526276,8,40,20,28,94,28,93,40);rect(c,0xffd53030,22,23,12,9,2);rect(c,0xffc4d4e6,68,23,12,9,2);rect(c,0xff25374c,13,45,75,57,4);p.setColor(Color.WHITE);p.setTextSize(16);p.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);p.setTextAlign(android.graphics.Paint.Align.CENTER);c.drawText("LiFePO4",50,76,p);p.setTextAlign(android.graphics.Paint.Align.LEFT);}
