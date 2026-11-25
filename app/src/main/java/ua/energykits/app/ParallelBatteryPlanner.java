@@ -6,6 +6,13 @@ import org.json.JSONObject;
 final class ParallelBatteryPlanner {
     private ParallelBatteryPlanner() {}
 
+    static boolean systemMatches(JSONObject inverter, JSONObject battery, JSONObject rule) {
+        boolean i = inverter.optBoolean("requires_hv_system"), b = battery.optBoolean("requires_hv_system");
+        boolean hv = rule != null && "HV".equals(rule.optString("system")) && rule.optBoolean("automatic");
+        return i == b && i == hv && (!hv || (rule.optInt("min_modules") == 1 &&
+                inverter.optDouble("dc_min") > 100 && battery.optDouble("voltage_min") > 100));
+    }
+
     static int minimumModules(JSONObject inverter, JSONObject battery, JSONObject rule,
                               double loadKw, double minimumAh) {
         if (inverter == null || battery == null || rule == null ||
@@ -15,7 +22,7 @@ final class ParallelBatteryPlanner {
                 inverter.optDouble("kw") < loadKw ||
                 !CompatibilityMath.positiveFinite(inverter.optDouble("kw")) ||
                 CompatibilityMath.exceedsLimit(loadKw, inverter.optDouble("max_battery_discharge_kw")) ||
-                battery.optBoolean("requires_hv_system") ||
+                !systemMatches(inverter, battery, rule) ||
                 !CompatibilityMath.validRange(inverter.optDouble("dc_min"), inverter.optDouble("dc_max")) ||
                 !CompatibilityMath.validRange(battery.optDouble("voltage_min"), battery.optDouble("voltage_max")) ||
                 CompatibilityMath.voltageConflict(inverter.optDouble("voltage"), battery.optDouble("voltage"),
@@ -31,7 +38,7 @@ final class ParallelBatteryPlanner {
                 !CompatibilityMath.positiveFinite(CompatibilityCatalog.chargeLimit(inverter, battery))) return 0;
         int min = rule.optInt("min_modules");
         if (min < 1) return 0;
-        int max = rule.optString("parallel_source").startsWith("https://")
+        int max = !"HV".equals(rule.optString("system")) && rule.optString("parallel_source").startsWith("https://")
                 ? Math.min(64, rule.optInt("max_parallel_modules", 1)) : 1;
         // The existing current safety margin applies to the whole battery bank.
         double n = Math.max(min, Math.max(Math.ceil(required / discharge), Math.ceil(minimumAh / ah)));
