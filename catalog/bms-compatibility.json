@@ -12,7 +12,10 @@
     "conditions": "Серії інверторів і модель АКБ є в таблиці Dyness. Застосуйте профіль Deye з інструкції АКБ та перевірте зв’язок BMS.",
     "min_modules": 1,
     "automatic": true,
-    "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf"
+    "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf",
+    "max_parallel_modules": 50,
+    "parallel_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf",
+    "parallel_conditions": "Однакові модулі, підтверджена конфігурація BMS, зовнішній розподільний вузол та захист. Для понад 12 модулів потрібне завершення CAN згідно з інструкцією."
   },
   {
     "inverters": [
@@ -162,7 +165,10 @@
     "conditions": "Dyness 15.07.2026: серія Solis S6-EH1P3K-8K-L-PRO/PLUS підтримує PowerBrick Plus. Інструкція V4.0: заводський профіль DIP для Solis, один модуль допускається; перевірити зв’язок BMS, профіль Dyness LV та ліміти заряду/розряду. Потужність навантаження обмежена розрахунком струму.",
     "min_modules": 1,
     "automatic": true,
-    "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf"
+    "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf",
+    "max_parallel_modules": 50,
+    "parallel_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf",
+    "parallel_conditions": "Однакові модулі, підтверджена конфігурація BMS, зовнішній розподільний вузол та захист. Для понад 12 модулів потрібне завершення CAN згідно з інструкцією."
   },
   {
     "inverters": [
@@ -235,6 +241,65 @@
     "conditions": "Таблиця Dyness 15.07.2026 містить SUN-(3–12)K-SG05LP3-EU-SM2. Інструкція PowerBrick Plus V4.0 підтверджує профіль Deye і можливість одного модуля для обмеженого навантаження. Не гарантує повні 12 кВт з одним модулем; перевірити струми, прошивку та BMS.",
     "min_modules": 1,
     "automatic": true,
-    "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf"
+    "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf",
+    "max_parallel_modules": 50,
+    "parallel_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf",
+    "parallel_conditions": "Однакові модулі, підтверджена конфігурація BMS, зовнішній розподільний вузол та захист. Для понад 12 модулів потрібне завершення CAN згідно з інструкцією."
+  },
+  {
+    "inverters": [
+      "Deye SUN-5K-SG03LP1-EU",
+      "Deye SUN-12K-SG04LP3-EU",
+      "Deye SUN-6K-SG06LP1-EU-BM2",
+      "Deye SUN-8K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG05LP3-EU-SM2"
+    ],
+    "source": "https://hqcdn.hqsmartcloud.com/deyeinverter/2026/10/19/DeyeApprovedBatterylistDY-LV48-0132.pdf",
+    "protocol": "CAN",
+    "min_modules": 1,
+    "automatic": true,
+    "batteries": [
+      "Deye SE-G5.1 Pro-B"
+    ],
+    "conditions": "DY-LV48-0132, стор. 1–2: точні моделі АКБ, CAN 00. Одна АКБ лише в межах паспортного струму і за умови справного зв’язку BMS.",
+    "max_parallel_modules": 32,
+    "parallel_source": "https://deye.com/wp-content/uploads/2026/03/deye-ess-user-manualse-g5.1-pro-b-deen-v05_20260314.pdf",
+    "parallel_conditions": "Однакові модулі; не більше 32 без зовнішнього обладнання; перевірити спільну шину DC, захист та зв’язок BMS."
+  },
+  {
+    "inverters": [
+      "LuxPower SNA5000-WPV",
+      "LuxPower SNA 6000 WPV",
+      "LuxPower LXP6K"
+    ],
+    "batteries": [
+      "Dyness PowerBrick Plus"
+    ],
+    "source": "https://samonolithportalprodcdn.blob.core.windows.net/assets/general_product_documents/599d926ab38644b9db9f1b06a16d9fbceb6e9aa0_Dyness_Low_voltage_Batteries_Campatibility_List_20260715.pdf",
+    "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf",
+    "protocol": "BMS Dyness (профіль LuxPower)",
+    "min_modules": 1,
+    "automatic": false,
+    "max_parallel_modules": 50,
+    "parallel_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf",
+    "conditions": "Сімейства SNA 3–6 кВт та LXP Hybrid у списку Dyness 15.07.2026. Інструкція PowerBrick Plus визначає профіль LuxPower. До автоматичного підбору потрібна перевірка точного протоколу, ревізії та гарантійного списку LuxPower."
+  },
+  {
+    "inverters": [
+      "Growatt SPM 6000TL-HU",
+      "Growatt SPM 8000TL-HU"
+    ],
+    "batteries": [
+      "Dyness PowerBrick Plus"
+    ],
+    "source": "https://samonolithportalprodcdn.blob.core.windows.net/assets/general_product_documents/599d926ab38644b9db9f1b06a16d9fbceb6e9aa0_Dyness_Low_voltage_Batteries_Campatibility_List_20260715.pdf",
+    "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf",
+    "protocol": "Потребує підтвердження профілю SPM",
+    "min_modules": 0,
+    "automatic": false,
+    "max_parallel_modules": 50,
+    "parallel_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf",
+    "conditions": "SPM3–10KTL-HU у списку Dyness 15.07.2026. Інструкція PowerBrick Plus прямо описує SPH/SPA та SPF, не SPM: не активувати автоматичний підбір до уточнення."
   }
 ]
