@@ -309,5 +309,112 @@
     "max_parallel_modules": 50,
     "parallel_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf",
     "conditions": "SPM3–10KTL-HU у списку Dyness 15.07.2026. Інструкція PowerBrick Plus прямо описує SPH/SPA та SPF, не SPM: не активувати автоматичний підбір до уточнення."
+  },
+  {
+    "inverters": [
+      "Deye SUN-5K-SG03LP1-EU",
+      "Deye SUN-12K-SG04LP3-EU",
+      "Deye SUN-6K-SG06LP1-EU-BM2",
+      "Deye SUN-8K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG05LP3-EU-SM2",
+      "Deye SUN-16K-SG01LP1-EU",
+      "Deye SUN-20K-SG05LP3-EU-SM2"
+    ],
+    "batteries": [
+      "Dyness B4850"
+    ],
+    "source": "https://hqcdn.hqsmartcloud.com/deyeinverter/2026/10/19/DeyeApprovedBatterylistDY-LV48-0132.pdf",
+    "protocol": "CAN",
+    "conditions": "DY-LV48-0132, стор. 1 та 3. Профіль Deye 00, однорідні модулі. Кількість визначається тривалим струмом; перевірити паспортну таблицю підбору, температурні обмеження, кабелі та умови BMS.",
+    "min_modules": 1,
+    "automatic": true,
+    "max_parallel_modules": 40,
+    "parallel_source": "https://es.dyness.com/Public/Uploads/uploadfile/files/20241023/B4850UserManualEN.pdf",
+    "setup_source": "https://es.dyness.com/Public/Uploads/uploadfile/files/20241023/B4850UserManualEN.pdf"
+  },
+  {
+    "inverters": [
+      "Deye SUN-5K-SG03LP1-EU",
+      "Deye SUN-12K-SG04LP3-EU",
+      "Deye SUN-6K-SG06LP1-EU-BM2",
+      "Deye SUN-8K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG05LP3-EU-SM2",
+      "Deye SUN-16K-SG01LP1-EU",
+      "Deye SUN-20K-SG05LP3-EU-SM2"
+    ],
+    "batteries": [
+      "Pylontech US5000"
+    ],
+    "source": "https://hqcdn.hqsmartcloud.com/deyeinverter/2026/10/19/DeyeApprovedBatterylistDY-LV48-0132.pdf",
+    "protocol": "CAN",
+    "conditions": "DY-LV48-0132, стор. 1 та 3. Профіль Deye 00, однорідні модулі. Кількість визначається тривалим струмом; перевірити паспортну таблицю підбору, температурні обмеження, кабелі та умови BMS.",
+    "min_modules": 1,
+    "automatic": true,
+    "max_parallel_modules": 16,
+    "parallel_source": "https://manuals.plus/m/015bfc9290427912a8d9e7d61f75fe205a5d0c33d48c9720924ef16abe4a0ac0",
+    "setup_source": "https://manuals.plus/m/015bfc9290427912a8d9e7d61f75fe205a5d0c33d48c9720924ef16abe4a0ac0"
+  },
+  {
+    "inverters": [
+      "Deye SUN-5K-SG03LP1-EU",
+      "Deye SUN-12K-SG04LP3-EU",
+      "Deye SUN-6K-SG06LP1-EU-BM2",
+      "Deye SUN-8K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG05LP3-EU-SM2",
+      "Deye SUN-16K-SG01LP1-EU",
+      "Deye SUN-20K-SG05LP3-EU-SM2"
+    ],
+    "batteries": [
+      "Pylontech US3000C"
+    ],
+    "source": "https://hqcdn.hqsmartcloud.com/deyeinverter/2026/10/19/DeyeApprovedBatterylistDY-LV48-0132.pdf",
+    "protocol": "CAN",
+    "conditions": "DY-LV48-0132, стор. 1 та 3. Профіль Deye 00, однорідні модулі. Кількість визначається тривалим струмом; перевірити паспортну таблицю підбору, температурні обмеження, кабелі та умови BMS.",
+    "min_modules": 1,
+    "automatic": true,
+    "max_parallel_modules": 16,
+    "parallel_source": "https://manuals.plus/m/bec9aefb0ff38e9de363419a7d33461258e6d8e6ec72fd35df06f396c050b7a4",
+    "setup_source": "https://manuals.plus/m/bec9aefb0ff38e9de363419a7d33461258e6d8e6ec72fd35df06f396c050b7a4"
+  },
+  {
+    "inverters": [
+      "Deye SUN-5K-SG03LP1-EU",
+      "Deye SUN-12K-SG04LP3-EU",
+      "Deye SUN-6K-SG06LP1-EU-BM2",
+      "Deye SUN-8K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG05LP3-EU-SM2",
+      "Deye SUN-16K-SG01LP1-EU",
+      "Deye SUN-20K-SG05LP3-EU-SM2"
+    ],
+    "batteries": [
+      "Pylontech US2000C"
+    ],
+    "source": "https://hqcdn.hqsmartcloud.com/deyeinverter/2026/10/19/DeyeApprovedBatterylistDY-LV48-0132.pdf",
+    "protocol": "CAN",
+    "conditions": "DY-LV48-0132, стор. 1 та 3. Профіль Deye 00, однорідні модулі. Кількість визначається тривалим струмом; перевірити паспортну таблицю підбору, температурні обмеження, кабелі та умови BMS.",
+    "min_modules": 1,
+    "automatic": true,
+    "max_parallel_modules": 16,
+    "parallel_source": "https://manuals.plus/m/029ed3ff90d1d5889db16c1e9a291e78d16af2c9b1f03f84ceacb79ef4bb048d",
+    "setup_source": "https://manuals.plus/m/029ed3ff90d1d5889db16c1e9a291e78d16af2c9b1f03f84ceacb79ef4bb048d"
+  },
+  {
+    "inverters": [
+      "Solis S6-EH3P20K-H"
+    ],
+    "batteries": [
+      "Dyness STACK100-12"
+    ],
+    "source": "https://za.dyness.com/Public/Uploads/uploadfile/files/20251216/DynessSTACK100SeriesCompatibilityList20251212.pdf",
+    "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20241023/DynessSTACK100UserManualEN0826.pdf",
+    "protocol": "CAN",
+    "conditions": "Сумісний повний HV стек 12S із SBDU100; не масштабувати як паралельні LV АКБ. Потрібна професійна перевірка конфігурації, прошивок, фазного навантаження та захисту.",
+    "min_modules": 1,
+    "automatic": true,
+    "system": "HV"
   }
 ]
