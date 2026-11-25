@@ -90,14 +90,15 @@ public class MainActivity extends Activity {
  if(cancel.isCanceled()){cb.onWriteCancelled();return;}
  boolean requested=false;for(android.print.PageRange range:pages)if(range.getStart()==0)requested=true;
  if(!requested){cb.onWriteFinished(new android.print.PageRange[0]);return;}
- try(android.graphics.pdf.PdfDocument pdf=new android.graphics.pdf.PdfDocument();java.io.FileOutputStream out=new java.io.FileOutputStream(dest.getFileDescriptor())){
+ android.graphics.pdf.PdfDocument pdf=new android.graphics.pdf.PdfDocument();
+ try(java.io.OutputStream out=new android.os.ParcelFileDescriptor.AutoCloseOutputStream(dest)){
  android.graphics.pdf.PdfDocument.Page pg=pdf.startPage(new android.graphics.pdf.PdfDocument.PageInfo.Builder(595,842,1).create());
  android.text.TextPaint paint=new android.text.TextPaint(android.graphics.Paint.ANTI_ALIAS_FLAG);paint.setColor(Color.BLACK);paint.setTextSize(12);
  android.text.StaticLayout layout=android.text.StaticLayout.Builder.obtain(report,0,report.length(),paint,515).setLineSpacing(3,1).build();
  if(layout.getHeight()>762){pdf.finishPage(pg);cb.onWriteFailed("Звіт перевищує розмір сторінки");return;}
  pg.getCanvas().translate(40,40);layout.draw(pg.getCanvas());pdf.finishPage(pg);pdf.writeTo(out);
  if(cancel.isCanceled())cb.onWriteCancelled();else cb.onWriteFinished(new android.print.PageRange[]{new android.print.PageRange(0,0)});
- }catch(Exception ex){cb.onWriteFailed("Не вдалося створити PDF");}
+ }catch(Exception ex){cb.onWriteFailed("Не вдалося створити PDF");}finally{pdf.close();}
  }
  },new android.print.PrintAttributes.Builder().setMediaSize(android.print.PrintAttributes.MediaSize.ISO_A4).build());
  }
