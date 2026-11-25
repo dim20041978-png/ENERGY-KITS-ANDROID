@@ -4,6 +4,7 @@ on:
     branches: [verify/energy-kits-android-1.0.0]
 permissions:
   contents: read
+  actions: read
 jobs:
   device:
     runs-on: ubuntu-latest
@@ -14,9 +15,14 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: actions/download-artifact@v4
         with:
-          gradle-version: '8.9'
+          github-token: ${{ github.token }}
+          run-id: '45674698337'
+          name: EnergyKits-1.0.0-debug
+          path: app/build/outputs/apk/debug
+      - name: Check the exact APK bytes
+        run: echo '6768f813290be3816b0ac7357425a5d791885e15c41a09ff4530769517cd2352  app/build/outputs/apk/debug/app-debug.apk' | sha256sum -c -
       - name: Prepare Android SDK and emulator
         shell: bash
         run: |
@@ -35,7 +41,6 @@ jobs:
           "$ANDROID_HOME/emulator/emulator" -list-avds | grep -Fx EnergyKitsVerification
           "$ANDROID_HOME/emulator/emulator" -avd EnergyKitsVerification -no-window -no-audio -no-snapshot -no-boot-anim -no-metrics -gpu swiftshader_indirect > "$RUNNER_TEMP/energy-emulator.log" 2>&1 &
           emulator_pid=$!
-          gradle :app:assembleDebug --console=plain
           if ! kill -0 "$emulator_pid"; then
             cat "$RUNNER_TEMP/energy-emulator.log"
             exit 1
