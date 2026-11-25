@@ -163,5 +163,78 @@
     "min_modules": 1,
     "automatic": true,
     "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf"
+  },
+  {
+    "inverters": [
+      "Deye SUN-5K-SG03LP1-EU",
+      "Deye SUN-12K-SG04LP3-EU",
+      "Deye SUN-6K-SG06LP1-EU-BM2",
+      "Deye SUN-8K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG05LP3-EU-SM2"
+    ],
+    "source": "https://hqcdn.hqsmartcloud.com/deyeinverter/2026/10/19/DeyeApprovedBatterylistDY-LV48-0132.pdf",
+    "protocol": "CAN",
+    "min_modules": 1,
+    "automatic": true,
+    "batteries": [
+      "Deye SE-F12-C",
+      "Deye SE-F16-C",
+      "Deye SE-F16-L"
+    ],
+    "conditions": "DY-LV48-0132, стор. 1–2: серії SE-F12/SE-F16, профіль 00. Інструкція B02 підтверджує варіанти -C/-L. Одна АКБ лише в межах паспортних струмів; перевірити прошивку, кабель BMS і обмеження за температурою.",
+    "setup_source": "https://deyeess.com/wp-content/uploads/2026/08/Deye-ESS-User-Manual-SE-F12-SE-F16-EU-EN-DE-V-B02-_20261112.pdf"
+  },
+  {
+    "inverters": [
+      "Deye SUN-5K-SG03LP1-EU",
+      "Deye SUN-12K-SG04LP3-EU",
+      "Deye SUN-6K-SG06LP1-EU-BM2",
+      "Deye SUN-8K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG05LP3-EU-SM2"
+    ],
+    "source": "https://hqcdn.hqsmartcloud.com/deyeinverter/2026/10/19/DeyeApprovedBatterylistDY-LV48-0132.pdf",
+    "protocol": "CAN",
+    "min_modules": 1,
+    "automatic": true,
+    "batteries": [
+      "Deye SE-F5 Pro-C"
+    ],
+    "conditions": "DY-LV48-0132, стор. 1–2: SE-F5 Pro, CAN 00; інструкція підтверджує варіант -C. Одна АКБ лише при достатньому безперервному струмі; перевірити прошивку і BMS.",
+    "setup_source": "https://deyeess.com/wp-content/uploads/2025/12/Deye-ESS-User-Manual-SE-F5-Pro-EUENDE-V09_20251118.pdf"
+  },
+  {
+    "inverters": [
+      "Deye SUN-5K-SG03LP1-EU",
+      "Deye SUN-12K-SG04LP3-EU",
+      "Deye SUN-6K-SG06LP1-EU-BM2",
+      "Deye SUN-8K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG06LP1-EU-BM3",
+      "Deye SUN-12K-SG05LP3-EU-SM2"
+    ],
+    "source": "https://hqcdn.hqsmartcloud.com/deyeinverter/2026/10/19/DeyeApprovedBatterylistDY-LV48-0132.pdf",
+    "protocol": "CAN",
+    "min_modules": 1,
+    "automatic": true,
+    "batteries": [
+      "Deye SE-G5.1 Pro-B",
+      "Deye RW-M6.1-B"
+    ],
+    "conditions": "DY-LV48-0132, стор. 1–2: точні моделі АКБ, CAN 00. Одна АКБ лише в межах паспортного струму і за умови справного зв’язку BMS."
+  },
+  {
+    "inverters": [
+      "Deye SUN-12K-SG05LP3-EU-SM2"
+    ],
+    "batteries": [
+      "Dyness PowerBrick Plus"
+    ],
+    "source": "https://samonolithportalprodcdn.blob.core.windows.net/assets/general_product_documents/599d926ab38644b9db9f1b06a16d9fbceb6e9aa0_Dyness_Low_voltage_Batteries_Campatibility_List_20260715.pdf",
+    "protocol": "CAN",
+    "conditions": "Таблиця Dyness 15.07.2026 містить SUN-(3–12)K-SG05LP3-EU-SM2. Інструкція PowerBrick Plus V4.0 підтверджує профіль Deye і можливість одного модуля для обмеженого навантаження. Не гарантує повні 12 кВт з одним модулем; перевірити струми, прошивку та BMS.",
+    "min_modules": 1,
+    "automatic": true,
+    "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20261012/WLFC0500251PowerbrickPLUSUserManualENV4.020261009.pdf"
   }
 ]
