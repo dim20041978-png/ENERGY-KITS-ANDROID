@@ -26,7 +26,9 @@ jobs:
           set +o pipefail
           yes | "$SDKTOOLS/sdkmanager" --licenses >/dev/null
           set -o pipefail
-          "$SDKTOOLS/sdkmanager" "platforms;android-35" "build-tools;35.0.0" "system-images;android-35;google_apis;x86_64"
+          "$SDKTOOLS/sdkmanager" "platforms;android-35" "build-tools;35.0.0" "emulator" "platform-tools" "system-images;android-35;google_apis;x86_64"
+          export PATH="$ANDROID_HOME/platform-tools:$PATH"
+          echo "$ANDROID_HOME/platform-tools" >> "$GITHUB_PATH"
           printf 'no\n' | "$SDKTOOLS/avdmanager" create avd --name EnergyKitsVerification --package "system-images;android-35;google_apis;x86_64" --device pixel_2
           "$ANDROID_HOME/emulator/emulator" -avd EnergyKitsVerification -no-window -no-audio -no-snapshot -no-boot-anim -no-metrics -gpu swiftshader_indirect > "$RUNNER_TEMP/energy-emulator.log" 2>&1 &
           gradle :app:assembleDebug --console=plain
