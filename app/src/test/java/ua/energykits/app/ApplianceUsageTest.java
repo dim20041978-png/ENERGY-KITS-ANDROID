@@ -28,6 +28,23 @@ public class ApplianceUsageTest {
         assertTrue(Double.isNaN(ApplianceUsage.runtimeHours(0,515)));
     }
 
+    @Test public void screenshotExampleHasDailyDeficit() {
+        assertEquals(9216, ApplianceUsage.usableWh(10240), 0.001);
+        assertEquals(10064.4444444, ApplianceUsage.dailyBatteryWh(8410), 0.001);
+        assertEquals(-848.4444444, ApplianceUsage.dailyBalanceWh(10240,8410), 0.001);
+        assertEquals("2 год 31 хв", ApplianceUsage.runtimeText(ApplianceUsage.runtimeHours(10240,3265)));
+    }
+
+    @Test public void dailyBalanceSupportsSurplusAndUnknownCapacity() {
+        assertEquals(2880, ApplianceUsage.dailyBalanceWh(4000,0), 0.001);
+        assertEquals(0, ApplianceUsage.dailyBalanceWh(800,0), 0.001);
+        assertTrue(ApplianceUsage.dailyBalanceWh(10240,1000)>0);
+        assertTrue(Double.isNaN(ApplianceUsage.dailyBalanceWh(0,1000)));
+        assertTrue(Double.isNaN(ApplianceUsage.dailyBalanceWh(10240,-1)));
+        assertEquals("1 год 0 хв", ApplianceUsage.runtimeText(0.999));
+        assertEquals("—", ApplianceUsage.runtimeText(Double.NaN));
+    }
+
     @Test public void everyApplianceHasDefaultValues() {
         assertEquals(ApplianceUsage.NAMES.length, ApplianceUsage.WATTS.length);
         assertEquals(ApplianceUsage.NAMES.length, ApplianceUsage.HOURS.length);
