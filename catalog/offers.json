@@ -197,7 +197,15 @@
     "currency": "UAH",
     "updated_at": "2026-11-25",
     "phases": 1,
-    "spec_source": "https://hgc-energy.com.ua/katalog/"
+    "spec_source": "https://deye.info/catalog/sun-6k-sg06lp1-eu-bm2",
+    "dc_min": 40,
+    "dc_max": 60,
+    "max_charge_a": 135,
+    "max_discharge_a": 135,
+    "pv_mppt_min": 150,
+    "pv_mppt_max": 425,
+    "pv_max_v": 500,
+    "spec_verified_at": "2026-11-25"
   },
   {
     "kind": "inverter",
@@ -210,7 +218,15 @@
     "currency": "UAH",
     "updated_at": "2026-11-25",
     "phases": 1,
-    "spec_source": "https://hgc-energy.com.ua/katalog/"
+    "spec_source": "https://deye-inverters.com/cs/inverters/deye-sun-7-12k-sg06lp1-eu-bm3/",
+    "dc_min": 40,
+    "dc_max": 60,
+    "max_charge_a": 185,
+    "max_discharge_a": 185,
+    "pv_mppt_min": 150,
+    "pv_mppt_max": 425,
+    "pv_max_v": 500,
+    "spec_verified_at": "2026-11-25"
   },
   {
     "kind": "inverter",
@@ -223,7 +239,15 @@
     "currency": "UAH",
     "updated_at": "2026-11-25",
     "phases": 1,
-    "spec_source": "https://hgc-energy.com.ua/katalog/"
+    "spec_source": "https://deye-inverters.com/cs/inverters/deye-sun-7-12k-sg06lp1-eu-bm3/",
+    "dc_min": 40,
+    "dc_max": 60,
+    "max_charge_a": 250,
+    "max_discharge_a": 250,
+    "pv_mppt_min": 150,
+    "pv_mppt_max": 425,
+    "pv_max_v": 500,
+    "spec_verified_at": "2026-11-25"
   },
   {
     "kind": "inverter",
