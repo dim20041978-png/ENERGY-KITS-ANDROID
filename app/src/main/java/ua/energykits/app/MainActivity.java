@@ -102,7 +102,23 @@ public class MainActivity extends Activity {
  }
  },new android.print.PrintAttributes.Builder().setMediaSize(android.print.PrintAttributes.MediaSize.ISO_A4).build());
  }
- void pairResult(JSONObject x,JSONObject y){Dialog d=new Dialog(this,android.R.style.Theme_Material_NoActionBar);LinearLayout body=page(d,"Вибраний енергокомплект");offerPhoto(body,x);pageText(body,offerLabel(x),20);pageButton(body,"Магазин інвертора",()->openOffer(x));offerPhoto(body,y);pageText(body,offerLabel(y),20);pageButton(body,"Магазин акумулятора",()->openOffer(y));pageText(body,"Разом: "+(x.optDouble("price")+y.optDouble("price"))+" грн",24);pageText(body,pairCheck(x,y),17);pageButton(body,"PDF / Друк",()->printPair(x,y));pageButton(body,"Оновити ціни",()->refreshPair(d,x,y));pageButton(body,"Порівняти комплекти",()->compareKits(x,y));pageButton(body,"Зберегти комплект",()->{if(savePair(x,y)){d.dismiss();Toast.makeText(this,"Комплект збережено",Toast.LENGTH_SHORT).show();}});pageButton(body,"Зберегти та додати інший комплект",()->{if(savePair(x,y)){d.dismiss();for(EditText e:new EditText[]{inv,bat,ip,bp,iv,bv,ah,bms,watts})e.setText("");inverterOffer=null;batteryOffer=null;watts.requestFocus();}});pageButton(body,"Вихід",()->{if(savePair(x,y)){d.dismiss();finish();}});pageButton(body,"Назад",d::dismiss);d.show();}
+ void manualPrices(Dialog previous,JSONObject x,JSONObject y){
+ Dialog d=new Dialog(this,android.R.style.Theme_Material_NoActionBar);LinearLayout body=page(d,"Ручне введення цін");
+ pageText(body,"Введіть перевірені вами ціни у гривнях. Вони будуть позначені як ручні, а не автоматично отримані.",16);
+ LinearLayout old=fieldHost;fieldHost=body;
+ pageText(body,x.optString("model"),18);EditText first=field("Ціна інвертора, грн",android.text.InputType.TYPE_CLASS_NUMBER|android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
+ pageText(body,y.optString("model"),18);EditText second=field("Ціна АКБ, грн",android.text.InputType.TYPE_CLASS_NUMBER|android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
+ fieldHost=old;
+ pageButton(body,"Застосувати",()->{try{
+ double a=num(first),b=num(second);if(Double.isInfinite(a+b))throw new IllegalArgumentException();
+ JSONObject nx=new JSONObject(x.toString()),ny=new JSONObject(y.toString());
+ String date=new java.text.SimpleDateFormat("yyyy-MM-dd",java.util.Locale.US).format(new java.util.Date());
+ for(JSONObject o:new JSONObject[]{nx,ny}){o.put("price",o==nx?a:b);o.put("seller","Ручне введення");o.put("updated_at",date);o.put("price_source","manual");o.remove("url");}
+ d.dismiss();previous.dismiss();pairResult(nx,ny);
+ }catch(Exception ex){Toast.makeText(this,"Введіть дві коректні додатні ціни",Toast.LENGTH_LONG).show();}});
+ pageButton(body,"Скасувати",d::dismiss);d.show();
+ }
+ void pairResult(JSONObject x,JSONObject y){Dialog d=new Dialog(this,android.R.style.Theme_Material_NoActionBar);LinearLayout body=page(d,"Вибраний енергокомплект");offerPhoto(body,x);pageText(body,offerLabel(x),20);pageButton(body,"Магазин інвертора",()->openOffer(x));offerPhoto(body,y);pageText(body,offerLabel(y),20);pageButton(body,"Магазин акумулятора",()->openOffer(y));pageText(body,"Разом: "+(x.optDouble("price")+y.optDouble("price"))+" грн",24);pageText(body,pairCheck(x,y),17);pageButton(body,"PDF / Друк",()->printPair(x,y));pageButton(body,"Оновити ціни",()->refreshPair(d,x,y));pageButton(body,"Ввести ціни вручну",()->manualPrices(d,x,y));pageButton(body,"Порівняти комплекти",()->compareKits(x,y));pageButton(body,"Зберегти комплект",()->{if(savePair(x,y)){d.dismiss();Toast.makeText(this,"Комплект збережено",Toast.LENGTH_SHORT).show();}});pageButton(body,"Зберегти та додати інший комплект",()->{if(savePair(x,y)){d.dismiss();for(EditText e:new EditText[]{inv,bat,ip,bp,iv,bv,ah,bms,watts})e.setText("");inverterOffer=null;batteryOffer=null;watts.requestFocus();}});pageButton(body,"Вихід",()->{if(savePair(x,y)){d.dismiss();finish();}});pageButton(body,"Назад",d::dismiss);d.show();}
  void compareKits(JSONObject x,JSONObject y){
  Dialog d=new Dialog(this,android.R.style.Theme_Material_NoActionBar);LinearLayout body=page(d,"Порівняння комплектів");
  ArrayList<JSONObject> list=new ArrayList<>();for(int i=0;i<kits.length();i++){JSONObject k=kits.optJSONObject(i);if(k!=null)list.add(k);}
