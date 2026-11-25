@@ -408,13 +408,16 @@
       "Solis S6-EH3P15K-H"
     ],
     "batteries": [
-      "Dyness STACK100-12",
-      "Dyness STACK100-10"
+      "Dyness STACK100-8",
+      "Dyness STACK100-9",
+      "Dyness STACK100-10",
+      "Dyness STACK100-11",
+      "Dyness STACK100-12"
     ],
-    "source": "https://za.dyness.com/Public/Uploads/uploadfile/files/20251216/DynessSTACK100SeriesCompatibilityList20251212.pdf",
+    "source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20260827/DynessSTACK100SeriesCompatibilityList20260825.pdf",
     "setup_source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20241023/DynessSTACK100UserManualEN0826.pdf",
     "protocol": "CAN",
-    "conditions": "Сумісний повний HV стек 10S або 12S із SBDU100; не масштабувати як паралельні LV АКБ. Потрібна професійна перевірка конфігурації, прошивок, фазного навантаження та захисту.",
+    "conditions": "Dyness 25.08.2026, стор. 3: Solis S6-EH3P(12–20)K-H, 3–13S. Повний стек SBDU100. Перевірити точну ревізію, фазне навантаження, конфігурацію BMS та захист.",
     "min_modules": 1,
     "automatic": true,
     "system": "HV"
@@ -541,5 +544,93 @@
     "max_parallel_modules": 16,
     "parallel_source": "https://manuals.plus/m/029ed3ff90d1d5889db16c1e9a291e78d16af2c9b1f03f84ceacb79ef4bb048d",
     "setup_source": "https://manuals.plus/m/029ed3ff90d1d5889db16c1e9a291e78d16af2c9b1f03f84ceacb79ef4bb048d"
+  },
+  {
+    "inverters": [
+      "Deye SUN-20K-SG01HP3-EU-AM2",
+      "Deye SUN-25K-SG01HP3-EU-AM2"
+    ],
+    "batteries": [
+      "Dyness STACK100-8",
+      "Dyness STACK100-9",
+      "Dyness STACK100-10",
+      "Dyness STACK100-11",
+      "Dyness STACK100-12"
+    ],
+    "source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20260827/DynessSTACK100SeriesCompatibilityList20260825.pdf",
+    "setup_source": "https://mea.dyness.com/Public/Uploads/uploadfile/files/20250715/STACK100DatasheetEN20250626.pdf",
+    "protocol": "CAN",
+    "conditions": "Dyness 25.08.2026, стор. 1: Deye SUN-5K~25K-SG01HP3-EU-AM2, 4–12S. Повний HV стек; враховано окремий паспортний ліміт струму кожного інвертора. Перевірити прошивки, фазність, конфігурацію BMS та захист.",
+    "min_modules": 1,
+    "automatic": true,
+    "system": "HV"
+  },
+  {
+    "inverters": [
+      "Solis S6-EH3P30K-H"
+    ],
+    "batteries": [
+      "Dyness STACK100-8",
+      "Dyness STACK100-9",
+      "Dyness STACK100-10",
+      "Dyness STACK100-11",
+      "Dyness STACK100-12"
+    ],
+    "source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20260827/DynessSTACK100SeriesCompatibilityList20260825.pdf",
+    "setup_source": "https://mea.dyness.com/Public/Uploads/uploadfile/files/20250715/STACK100DatasheetEN20250626.pdf",
+    "protocol": "CAN",
+    "conditions": "Dyness 25.08.2026, стор. 3: Solis S6-EH3P(29.9–50)K-H, 4–13S. Розрахунок обмежено одним входом 70 А; підтвердити налаштування одного активного входу та захист.",
+    "min_modules": 1,
+    "automatic": true,
+    "system": "HV"
+  },
+  {
+    "inverters": [
+      "Deye SUN-5K-SG03LP1-EU",
+      "Deye SUN-12K-SG04LP3-EU",
+      "Deye SUN-16K-SG01LP1-EU",
+      "Solis S6-EH1P6K-L-PLUS",
+      "Solis S6-EH1P8K-L-PLUS",
+      "LuxPower LXP6K"
+    ],
+    "batteries": [
+      "Dyness DL5.0C"
+    ],
+    "source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20260727/DynessLowvoltageBatteriesCampatibilityList20260715.pdf",
+    "setup_source": "https://es.dyness.com/Public/Uploads/uploadfile/files/20250828/UMWL0G0001498DL5.0CUserManualENV22.pdf",
+    "protocol": "CAN (профіль виробника)",
+    "conditions": "Сімейства інверторів та DL5.0C у переліку Dyness 15.07.2026; інструкція DL5.0C V2.2 визначає профіль Deye, Solis та LuxPower. Звірити ревізію, прошивки, BMS та межі струмів. Автоматично пропонується один модуль; паралельні конфігурації поки не активовано.",
+    "min_modules": 1,
+    "automatic": true
+  },
+  {
+    "inverters": [
+      "MUST PV18-5248 PRO"
+    ],
+    "batteries": [
+      "Dyness DL5.0C",
+      "Dyness PowerBrick Plus"
+    ],
+    "source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20260727/DynessLowvoltageBatteriesCampatibilityList20260715.pdf",
+    "setup_source": "https://es.dyness.com/Public/Uploads/uploadfile/files/20250828/UMWL0G0001498DL5.0CUserManualENV22.pdf",
+    "protocol": "Профіль MUST; точна модель потребує підтвердження",
+    "conditions": "У списку Dyness PV18 2–5 кВт / PH18 2–5.5 кВт. Точний PV18-5248 PRO 5.2 кВт та повний робочий діапазон DC не підтверджено; не активувати автоматичний підбір.",
+    "min_modules": 0,
+    "automatic": false
+  },
+  {
+    "inverters": [
+      "SRNE ASF4880S180-H"
+    ],
+    "batteries": [
+      "Dyness DL5.0C",
+      "Dyness PowerBrick Plus"
+    ],
+    "source": "https://www.dyness.com/Public/Uploads/uploadfile/files/20260727/DynessLowvoltageBatteriesCampatibilityList20260715.pdf",
+    "setup_source": "https://www.srnesolar.com/userfiles/files/2024/09/11/ASF%2048V%208-10K%20single-phase%20EU%20manual.pdf",
+    "protocol": "CAN/RS485; точний профіль не підтверджено",
+    "conditions": "Dyness зазначає ASF4880U180-H, не європейський ASF4880S180-H. Не переносити підтвердження між ревізіями; потрібен точний список або письмове підтвердження виробника.",
+    "min_modules": 0,
+    "automatic": false
   }
 ]
