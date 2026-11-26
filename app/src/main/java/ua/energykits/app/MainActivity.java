@@ -111,12 +111,76 @@ public class MainActivity extends Activity {
  java.util.Iterator<JSONObject[]> iterator=pairs.iterator();while(iterator.hasNext()){JSONObject[] p=iterator.next();String key=p[0].optString("model")+"\n"+p[1].optString("model");if(!seen.add(key))iterator.remove();}
  return pairs;}
  void automaticPairs(java.util.List<JSONObject> inverters,java.util.List<JSONObject> batteries){foundInverters=inverters;foundBatteries=batteries;kitAlternatives.setEnabled(true);java.util.List<JSONObject[]> pairs=compatiblePairs(inverters,batteries);if(pairs.isEmpty()){kitSummary.setText(R.string.no_confirmed_kit);return;}JSONObject[] best=pairs.get(0);showPreview(best[0],best[1]);}
+ interface PriceChange{void change(long low,long high);}
+ class PriceSlider extends View{
+ final long min,max;long low,high;int active=-1;float downX;final android.graphics.Paint paint=new android.graphics.Paint(3);final PriceChange callback;
+ PriceSlider(long min,long max,PriceChange cb){super(MainActivity.this);this.min=min;this.max=max;low=min;high=max;callback=cb;setContentDescription("Ціновий діапазон. Для точного введення використовуйте поля Від і До.");setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);}
+ float left(){return dp(20);}float right(){return Math.max(left()+1,getWidth()-dp(20));}
+ float x(long v){return max<=min?left():left()+(right()-left())*(float)Math.max(0,Math.min(1,(v-(double)min)/(max-(double)min)));}
+ long value(float x){return KitPriceRange.position(min,max,(x-left())/(right()-left()));}
+ void range(long a,long b){low=a;high=b;invalidate();}
+ @Override protected void onDraw(android.graphics.Canvas canvas){super.onDraw(canvas);float y=getHeight()/2f,lo=x(low),hi=x(high);paint.setStrokeCap(android.graphics.Paint.Cap.ROUND);paint.setStrokeWidth(dp(5));paint.setColor(0xff456789);canvas.drawLine(left(),y,right(),y,paint);paint.setColor(0xff55d9ff);canvas.drawLine(lo,y,hi,y,paint);paint.setColor(0xff8ce5ff);canvas.drawCircle(lo,y,dp(10),paint);canvas.drawCircle(hi,y,dp(10),paint);paint.setStyle(android.graphics.Paint.Style.STROKE);paint.setStrokeWidth(dp(1));paint.setColor(Color.WHITE);canvas.drawCircle(lo,y,dp(10),paint);canvas.drawCircle(hi,y,dp(10),paint);paint.setStyle(android.graphics.Paint.Style.FILL);}
+ @Override public boolean onTouchEvent(android.view.MotionEvent e){
+ if(max<=min)return false;float px=e.getX();
+ switch(e.getActionMasked()){
+ case MotionEvent.ACTION_DOWN:downX=px;float dl=Math.abs(px-x(low)),dh=Math.abs(px-x(high));active=dl==dh?-2:dl<dh?0:1;getParent().requestDisallowInterceptTouchEvent(true);return true;
+ case MotionEvent.ACTION_MOVE:case MotionEvent.ACTION_UP:
+ if(active==-2){if(px==downX&&e.getActionMasked()==MotionEvent.ACTION_MOVE)return true;active=px<x(low)?0:1;}
+ if(active>=0){long v=value(px);long l=Math.max(min,Math.min(max,low)),h=Math.max(min,Math.min(max,high));if(active==0)l=Math.min(v,h);else h=Math.max(v,l);range(l,h);callback.change(l,h);}
+ if(e.getActionMasked()==MotionEvent.ACTION_UP){active=-1;getParent().requestDisallowInterceptTouchEvent(false);performClick();}return true;
+ case MotionEvent.ACTION_CANCEL:active=-1;getParent().requestDisallowInterceptTouchEvent(false);return true;
+ default:return true;
+ }}
+ @Override public boolean performClick(){super.performClick();return true;}
+ }
  void showPairChoices(java.util.List<JSONObject> inverters,java.util.List<JSONObject> batteries){
- Dialog d=new Dialog(this,android.R.style.Theme_Material_NoActionBar);LinearLayout body=page(d,"Готові енергокомплекти");java.util.List<JSONObject[]> pairs=compatiblePairs(inverters,batteries);
- pageText(body,"Підтверджені унікальні комплекти: "+pairs.size()+". Спочатку точна потужність, потім найближча більша; у межах потужності — за ціною. Підбір однієї або кількох однакових АКБ. Ціна обладнання без монтажу, захисту та шин. Перевірте фазність і паспортні умови.",16);
- if(pairs.isEmpty())pageText(body,"Автоматично підтверджених комплектів немає. Доступний ручний підбір.",18);
- int n=0;for(JSONObject[] p:pairs){if(n>=100)break;JSONObject x=p[0],y=p[1];pageText(body,"Комплект №"+(++n),22);offerPhoto(body,x);pageText(body,offerLabel(x),18);offerPhoto(body,y);pageText(body,offerLabel(y),18);pageText(body,"Разом: "+totalPrice(x,y),22);pageText(body,pairCheck(x,y),16);pageButton(body,"Вибрати комплект",()->{d.dismiss();pairResult(x,y);});}
- pageButton(body,"Ручний підбір",()->{d.dismiss();choosePair(inverters,batteries);});pageButton(body,"Оновити ціни",()->{d.dismiss();guidedSearch();});pageButton(body,"Назад",d::dismiss);d.show();
+ Dialog d=new Dialog(this,android.R.style.Theme_Material_NoActionBar);LinearLayout body=page(d,"Готові енергокомплекти");
+ java.util.List<JSONObject[]> pairs=compatiblePairs(inverters,batteries);
+ long minimum=Long.MAX_VALUE,maximum=0;for(JSONObject[] pair:pairs){long p=KitPriceRange.total(pair);if(p>=0){minimum=Math.min(minimum,p);maximum=Math.max(maximum,p);}}
+ final boolean hasPrices=minimum!=Long.MAX_VALUE;final long min=hasPrices?minimum:0,max=hasPrices?maximum:0;
+ LinearLayout filter=new LinearLayout(this);filter.setOrientation(LinearLayout.VERTICAL);filter.setPadding(dp(10),dp(10),dp(10),dp(10));filter.setBackground(gloss(0xff153d70,0xff081c3c));body.addView(filter);
+ TextView filterTitle=applianceText("ВАРТІСТЬ КОМПЛЕКТУ",17);filterTitle.setGravity(Gravity.CENTER);filter.addView(filterTitle);
+ LinearLayout rangeFields=new LinearLayout(this);filter.addView(rangeFields);
+ LinearLayout from=new LinearLayout(this),to=new LinearLayout(this);from.setOrientation(LinearLayout.VERTICAL);to.setOrientation(LinearLayout.VERTICAL);
+ LinearLayout.LayoutParams fromLp=new LinearLayout.LayoutParams(0,-2,1);fromLp.setMargins(0,dp(6),dp(4),0);rangeFields.addView(from,fromLp);
+ LinearLayout.LayoutParams toLp=new LinearLayout.LayoutParams(0,-2,1);toLp.setMargins(dp(4),dp(6),0,0);rangeFields.addView(to,toLp);
+ from.addView(applianceText("Від, грн",13));to.addView(applianceText("До, грн",13));
+ EditText lower=applianceInput(KitPriceRange.format(min),"Мінімальна ціна, грн"),upper=applianceInput(KitPriceRange.format(max),"Максимальна ціна, грн");
+ from.addView(lower,new LinearLayout.LayoutParams(-1,-2));to.addView(upper,new LinearLayout.LayoutParams(-1,-2));
+ TextView count=applianceText("",15);TextView note=applianceText("",13);note.setTextColor(0xffc6ddf5);
+ LinearLayout list=new LinearLayout(this);list.setOrientation(LinearLayout.VERTICAL);
+ TextView empty=applianceText("",16);LinearLayout[] cards=new LinearLayout[pairs.size()];TextView[] labels=new TextView[pairs.size()];
+ final boolean[] internal={false};
+ final long[] applied={min,max};
+ Runnable render=()->{
+ long lo=applied[0],hi=applied[1];int matches=0,shown=0,childIndex=0;
+ for(int i=0;i<pairs.size();i++){
+ JSONObject[] pair=pairs.get(i);long price=KitPriceRange.total(pair);boolean match=KitPriceRange.includes(price,lo,hi);
+ if(match)matches++;boolean show=match&&shown<100;
+ if(show){shown++;
+ if(cards[i]==null){JSONObject x=pair[0],y=pair[1];LinearLayout card=new LinearLayout(this);card.setOrientation(LinearLayout.VERTICAL);cards[i]=card;
+ TextView heading=applianceText("",22);heading.setPadding(dp(12),dp(12),dp(12),dp(12));labels[i]=heading;card.addView(heading);
+ offerPhoto(card,x);pageText(card,offerLabel(x),18);offerPhoto(card,y);pageText(card,offerLabel(y),18);pageText(card,"Разом: "+totalPrice(x,y),22);pageText(card,pairCheck(x,y),16);pageButton(card,"Вибрати комплект",()->{d.dismiss();pairResult(x,y);});list.addView(card,childIndex);}
+ labels[i].setText("Комплект №"+shown);}
+ if(cards[i]!=null){cards[i].setVisibility(show?View.VISIBLE:View.GONE);childIndex++;}
+ }
+ count.setText("Знайдено: "+matches+" із "+pairs.size()+" комплектів"+(matches>100?" (показано 100)":""));
+ empty.setText(pairs.isEmpty()?"Автоматично підтверджених комплектів немає. Доступний ручний підбір.":"У вибраному ціновому діапазоні комплектів немає.");
+ empty.setVisibility(matches==0?View.VISIBLE:View.GONE);
+ };
+ PriceSlider slider=new PriceSlider(min,max,(lo,hi)->{internal[0]=true;lower.setText(KitPriceRange.format(lo));upper.setText(KitPriceRange.format(hi));lower.setError(null);upper.setError(null);internal[0]=false;applied[0]=lo;applied[1]=hi;render.run();});
+ filter.addView(slider,new LinearLayout.LayoutParams(-1,dp(44)));
+ note.setText("Фільтр за сумою інвертора та всіх АКБ. Для орієнтовних цін — за показаною базовою сумою.");
+ filter.addView(note);pageButton(filter,"СКИНУТИ ФІЛЬТР",()->{internal[0]=true;lower.setText(KitPriceRange.format(min));upper.setText(KitPriceRange.format(max));lower.setError(null);upper.setError(null);internal[0]=false;applied[0]=min;applied[1]=max;slider.range(min,max);render.run();});
+ filter.addView(count);body.addView(empty);pageText(body,"Спочатку точна потужність, потім найближча більша; у межах потужності — за ціною. Ціна обладнання без монтажу, захисту та шин. Перевірте фазність і паспортні умови.",14);body.addView(list);
+ android.text.TextWatcher watcher=new android.text.TextWatcher(){public void beforeTextChanged(CharSequence s,int st,int c,int a){}public void onTextChanged(CharSequence s,int st,int before,int n){
+ if(internal[0])return;long lo=KitPriceRange.parse(lower.getText().toString()),hi=KitPriceRange.parse(upper.getText().toString());lower.setError(lo<0?"Вкажіть суму від 0":null);upper.setError(hi<0?"Вкажіть суму від 0":lo>=0&&hi<lo?"Сума До має бути не меншою за Від":null);
+ if(lo<0||hi<lo){count.setText("Некоректний діапазон — показано попередній результат");return;}
+ applied[0]=lo;applied[1]=hi;slider.range(lo,hi);render.run();}
+ public void afterTextChanged(android.text.Editable e){}};
+ lower.addTextChangedListener(watcher);upper.addTextChangedListener(watcher);lower.setEnabled(hasPrices);upper.setEnabled(hasPrices);slider.setEnabled(hasPrices);
+ body.setFocusableInTouchMode(true);body.requestFocus();
+ pageButton(body,"Ручний підбір",()->{d.dismiss();choosePair(inverters,batteries);});pageButton(body,"Оновити ціни",()->{d.dismiss();guidedSearch();});pageButton(body,"Назад",d::dismiss);render.run();d.show();
  }
  void choosePair(java.util.List<JSONObject> i,java.util.List<JSONObject> a){Dialog d=new Dialog(this,android.R.style.Theme_Material_NoActionBar);LinearLayout body=page(d,"Результати підбору");JSONObject[] selected=new JSONObject[2];TextView summary=new TextView(this);summary.setTextColor(Color.WHITE);summary.setTextSize(18);summary.setText("Виберіть інвертор та акумулятор");body.addView(summary);Runnable advance=()->{if(selected[0]!=null&&selected[1]!=null&&d.isShowing()){d.dismiss();pairResult(selected[0],selected[1]);}};Runnable update=()->summary.setText(getString(R.string.manual_pair_summary,selected[0]==null?"не вибрано":selected[0].optString("model"),selected[1]==null?"не вибрано":selected[1].optString("model")));pageText(body,"Інвертори",22);if(i.isEmpty())pageText(body,"Пропозицій не знайдено",16);for(JSONObject o:i){offerPhoto(body,o);pageText(body,offerLabel(o),18);pageButton(body,"Вибрати інвертор",()->{if(selected[1]!=null&&!conflict(o,selected[1]).isEmpty()){Toast.makeText(this,conflict(o,selected[1]),Toast.LENGTH_LONG).show();return;}selected[0]=o;update.run();advance.run();});}pageText(body,"Акумулятори",22);if(a.isEmpty())pageText(body,"Пропозицій не знайдено",16);for(JSONObject o:a){offerPhoto(body,o);pageText(body,offerLabel(o),18);pageButton(body,"Вибрати акумулятор",()->{if(selected[0]!=null&&!conflict(selected[0],o).isEmpty()){Toast.makeText(this,conflict(selected[0],o),Toast.LENGTH_LONG).show();return;}selected[1]=o;update.run();advance.run();});}if(i.isEmpty()||a.isEmpty()){pageText(body,"Джерело цін не налаштоване, недоступне або не містить відповідних товарів. Ціни не вигадуються.",16);pageButton(body,"Налаштувати джерело цін",()->{d.dismiss();lastAutoQuery="";configureFeed();});}pageButton(body,"Назад",d::dismiss);d.show();}
  interface OfferChoice{void select(JSONObject o);}
